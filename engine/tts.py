@@ -90,7 +90,10 @@ def speak(text: str, out_wav: Path, voice: str, rate: str = "+0%") -> list[Word]
     if engine == "edge":
         mp3 = out_wav.with_suffix(".mp3")
         try:
-            words = asyncio.run(_edge(text, voice, rate, mp3))
+            # own thread: Playwright's sync API already runs an event loop in this one
+            from concurrent.futures import ThreadPoolExecutor
+            with ThreadPoolExecutor(1) as ex:
+                words = ex.submit(asyncio.run, _edge(text, voice, rate, mp3)).result(timeout=120)
             _to_wav(mp3, out_wav)
             mp3.unlink()
             if not words:
