@@ -1,0 +1,168 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  @font-face { font-family: Fraunces; src: url('{{ fonts }}/Fraunces-SOFT-WONK-opsz-wght.ttf'); font-weight: 100 900; font-style: normal; }
+  @font-face { font-family: Inter; src: url('{{ fonts }}/Inter-opsz-wght.ttf'); font-weight: 100 900; }
+  :root { --bg: {{ c.bg }}; --surface: {{ c.surface }}; --ink: {{ c.ink }}; --muted: {{ c.muted }}; --accent: {{ c.accent }}; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+  body { font-family: Inter, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  #stage { position: relative; width: 1080px; height: 1920px;
+    background: radial-gradient(900px 700px at 85% 8%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%), var(--bg); }
+  /* static grain: dithers the dark gradient so the encoder doesn't band it */
+  #stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* safe area: Instagram/YouTube UI covers the top ~250px, bottom ~420px and right ~130px */
+  .tag { position: absolute; left: 96px; top: 268px; font-size: 30px; font-weight: 600; letter-spacing: .16em;
+         text-transform: uppercase; color: var(--muted); }
+  .tag b { color: var(--accent); font-weight: 700; }
+  #main { position: absolute; left: 96px; right: 140px; top: 360px; height: 820px; display: flex; flex-direction: column; justify-content: center; }
+  #cap { position: absolute; left: 96px; right: 140px; top: 1236px; min-height: 180px; text-align: center;
+         font-weight: 800; font-size: 66px; line-height: 1.12; letter-spacing: -.01em; }
+  #cap span { color: var(--ink); }
+  #cap span.on { color: var(--accent); }
+  #cap span.past { color: var(--ink); }
+  #cap span.fut { color: color-mix(in srgb, var(--ink) 55%, transparent); }
+
+  .serif { font-family: Fraunces, Georgia, serif; font-variation-settings: "opsz" 144, "SOFT" 50; }
+  .kicker { font-size: 34px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 34px; }
+
+  .hook { font-weight: 600; line-height: 1.02; letter-spacing: -.02em; }
+  .title-k { font-size: 36px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+  .title-n { font-weight: 600; line-height: .98; letter-spacing: -.025em; margin: 30px 0 40px; }
+  .rule { height: 8px; background: var(--accent); border-radius: 4px; transform-origin: left; width: 220px; }
+  .title-c { font-size: 40px; color: var(--muted); margin-top: 40px; font-weight: 500; }
+
+  .stmt { border-left: 8px solid var(--accent); padding-left: 44px; }
+  .stmt p { font-weight: 500; line-height: 1.08; letter-spacing: -.015em; }
+
+  .lt { font-size: 46px; font-weight: 600; color: var(--muted); margin-bottom: 54px; line-height: 1.2; }
+  .li { display: flex; align-items: center; gap: 34px; margin-bottom: 44px; }
+  .li i { flex: none; width: 84px; height: 84px; border-radius: 50%; background: var(--accent); color: var(--bg);
+          font-style: normal; font-weight: 800; font-size: 42px; display: grid; place-items: center; }
+  .li span { font-size: 58px; font-weight: 650; line-height: 1.1; letter-spacing: -.01em; }
+
+  .card { border-radius: 28px; padding: 40px 44px; background: var(--surface); border: 3px solid color-mix(in srgb, var(--muted) 30%, transparent); }
+  .card.b { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+  .card small { display: block; font-size: 30px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .card.b small { color: var(--accent); }
+  .card p { font-size: 62px; font-weight: 500; line-height: 1.1; }
+  .arrow { text-align: center; font-size: 70px; color: var(--accent); margin: 18px 0; line-height: 1; }
+
+  .qm { font-size: 280px; line-height: .6; color: var(--accent); height: 150px; }
+  .qt { font-style: italic; font-weight: 400; line-height: 1.14; letter-spacing: -.01em; font-variation-settings: "opsz" 144, "SOFT" 100; }
+  .qb { font-size: 40px; font-weight: 600; color: var(--muted); margin-top: 44px; }
+
+  .cta-n { font-weight: 600; line-height: 1; letter-spacing: -.02em; }
+  .cta-t { font-size: 46px; color: var(--muted); margin: 34px 0 60px; line-height: 1.3; font-weight: 500; }
+  .pill { display: inline-block; align-self: flex-start; background: var(--accent); color: var(--bg); font-weight: 800; font-size: 50px;
+          padding: 26px 46px; border-radius: 999px; }
+  .url { font-size: 36px; color: var(--muted); margin-top: 40px; font-weight: 500; }
+</style></head>
+<body><div id="stage"><div class="tag" id="tag"></div><div id="main"></div><div id="cap"></div></div>
+<script>
+const D = {{ data|tojson }};
+const S = D.scene, $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))
+  .replace(/(\S+-\S+)/g, '<span style="white-space:nowrap">$1</span>');   // never break "Second-order" at the hyphen
+const seg = i => (D.segStarts[i] ?? 0);   // start time of spoken segment i (scene-relative)
+const A = (at, html, cls='') => `<div class="a ${cls}" data-at="${at}">${html}</div>`;
+
+// ---- layouts ---------------------------------------------------------------
+const num = String(D.number).padStart(2, '0');
+let tag = `<b>Nº ${num}</b> · ${esc(D.title)}`;
+let m = '';
+switch (S.layout) {
+  case 'hook':
+    tag = '';
+    m = A(0, `<p class="serif hook fit" data-max="132" data-min="78">${esc(S.text)}</p>`);
+    break;
+  case 'title':
+    tag = '';
+    m = A(0, `<div class="title-k">Mental model Nº ${num}</div>`) +
+        A(.12, `<div class="serif title-n fit" data-max="170" data-min="84">${esc(D.title)}</div>`) +
+        A(.3, `<div class="rule"></div>`, 'grow') +
+        A(.4, `<div class="title-c">${esc(D.category)}</div>`);
+    break;
+  case 'statement':
+    m = (S.kicker ? A(0, `<div class="kicker">${esc(S.kicker)}</div>`) : '') +
+        A(.1, `<div class="stmt"><p class="serif fit" data-max="104" data-min="60">${esc(S.text)}</p></div>`);
+    break;
+  case 'list': {
+    const off = S.say ? 1 : 0;
+    m = (S.title ? A(0, `<div class="lt">${esc(S.title)}</div>`) : '') +
+        S.items.map((it, i) => A(it.say ? seg(i + off) : .3 + i * .5,
+          `<div class="li"><i>${i + 1}</i><span>${esc(it.text)}</span></div>`)).join('');
+    break; }
+  case 'versus': {
+    const off = S.say ? 1 : 0, bAt = S.right.say ? seg(off + (S.left.say ? 1 : 0)) : D.voiceDur * .5;
+    m = A(S.left.say ? seg(off) : 0, `<div class="card"><small>${esc(S.left.label)}</small><p class="serif">${esc(S.left.text)}</p></div>`) +
+        A(bAt, `<div class="arrow">↓</div>`) +
+        A(bAt + .1, `<div class="card b"><small>${esc(S.right.label)}</small><p class="serif">${esc(S.right.text)}</p></div>`);
+    break; }
+  case 'quote':
+    m = A(0, `<div class="qm serif">“</div>`) +
+        A(.15, `<p class="serif qt fit" data-max="84" data-min="52">${esc(S.text)}</p>`) +
+        (S.by ? A(.6, `<div class="qb">— ${esc(S.by)}</div>`) : '');
+    break;
+  case 'cta':
+    tag = '';
+    m = A(0, `<div class="serif cta-n fit" data-max="124" data-min="70">${esc(D.brand.name)}</div>`) +
+        A(.15, `<div class="cta-t">${esc(D.brand.tagline)}</div>`) +
+        A(.35, `<div class="pill">Follow ${esc(D.brand.handle)}</div>`) +
+        (D.brand.site ? A(.5, `<div class="url">${esc(D.brand.site)}</div>`) : '');
+    break;
+}
+$('#tag').innerHTML = tag;
+$('#main').innerHTML = m;
+
+// ---- fit big type: largest size that keeps every word on one line and the block inside its box
+const box = $('#main');
+document.fonts.ready.then(() => {
+  document.querySelectorAll('.fit').forEach(el => {
+    let lo = +el.dataset.min, hi = +el.dataset.max;
+    const ok = px => { el.style.fontSize = px + 'px';
+      return el.scrollWidth <= el.clientWidth + 1 && box.scrollHeight <= box.clientHeight; };
+    if (ok(hi)) return;
+    while (hi - lo > 1) { const mid = (lo + hi) >> 1; ok(mid) ? lo = mid : hi = mid; }
+    ok(lo);
+  });
+  window.READY = true;
+});
+
+// ---- captions: 1-3 word chunks, broken at punctuation, current word lit
+const W = D.words, chunks = [];
+let cur = [];
+W.forEach((w, i) => {
+  cur.push(i);
+  const len = cur.map(j => W[j].text).join(' ').length;
+  if (cur.length >= 3 || len > 16 || /[.,!?;:]$/.test(w.text)) { chunks.push(cur); cur = []; }
+});
+if (cur.length) chunks.push(cur);
+const capOn = D.captions;
+
+// ---- render(t): put the scene in its state at time t; returns a key that changes only when pixels do
+const ease = x => 1 - Math.pow(1 - Math.min(Math.max(x, 0), 1), 3);
+window.render = t => {
+  let key = '';
+  document.querySelectorAll('.a').forEach(el => {
+    const p = ease((t - +el.dataset.at) / .42);
+    const q = Math.round(p * 30) / 30;
+    el.style.opacity = q;
+    el.style.transform = el.classList.contains('grow') ? '' : `translateY(${(1 - q) * 40}px)`;
+    if (el.classList.contains('grow')) el.firstChild.style.transform = `scaleX(${q})`;
+    key += q.toFixed(3) + ',';
+  });
+  let ci = -1, wi = -1;
+  if (capOn) {
+    W.forEach((w, i) => { if (w.s <= t + .03) wi = i; });
+    chunks.forEach((c, i) => { if (W[c[0]].s <= t + .03) ci = i; });
+    const c = chunks[ci];
+    if (c && t > W[c.at(-1)].e + .6 && ci === chunks.length - 1) ci = -1;   // clear after the last word
+    $('#cap').innerHTML = ci < 0 ? '' : chunks[ci].map(j =>
+      `<span class="${j === wi ? 'on' : j < wi ? 'past' : 'fut'}">${esc(W[j].text)}</span>`).join(' ');
+  }
+  return key + '|' + ci + '|' + wi;
+};
+</script></body></html>

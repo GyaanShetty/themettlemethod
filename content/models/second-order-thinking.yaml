@@ -1,0 +1,81 @@
+slug: second-order-thinking
+number: 2
+title: Second-order thinking
+category: Decision making
+publish_on: 2026-11-04
+summary: Every action has consequences, and those consequences have consequences. Ask "and then what?"
+
+scenes:
+  - layout: hook
+    text: Most bad decisions look great at first.
+    say: Most bad decisions look great at first. That's the trap.
+
+  - layout: title
+    say: Second-order thinking. Asking, and then what?
+
+  - layout: versus
+    left:
+      label: First-order
+      text: This solves my problem.
+      say: First-order thinking stops at the obvious result.
+    right:
+      label: Second-order
+      text: And then what happens?
+      say: Second-order thinking follows the chain one step further.
+
+  - layout: statement
+    kicker: The cobra effect
+    text: Pay for dead cobras, get more cobras.
+    say: The story goes that colonial Delhi paid a bounty for dead cobras. So people started breeding them.
+
+  - layout: list
+    title: Before you decide, ask
+    items:
+      - text: What happens next?
+        say: What happens next?
+      - text: Then what?
+        say: Then what?
+      - text: Who reacts, and how?
+        say: And who reacts, and how?
+
+  - layout: quote
+    text: You can never do merely one thing.
+    by: Garrett Hardin
+    say: Ecologist Garrett Hardin put it simply. You can never do merely one thing.
+
+  - layout: cta
+    say: Follow for one mental model every day.
+
+caption: |
+  Second-order thinking: don't stop at the first consequence. Ask "and then what?"
+  The cobra effect is the classic warning: reward dead cobras and people start farming them.
+  Before your next big decision, write down what happens next, then what, and who reacts.
+tags: [mentalmodels, secondorderthinking, decisionmaking, thinking, criticalthinking, selfimprovement]
+
+article: |
+  First-order thinking asks what happens right now. Second-order thinking asks what happens next,
+  and after that. Most mistakes come from stopping at the first, pleasant consequence.
+
+  The ecologist Garrett Hardin summed it up as "you can never do merely one thing": every action
+  sets off effects beyond the one you intended. Investor Howard Marks makes a similar point with
+  "second-level thinking", the habit of asking what everyone else expects and what happens after.
+
+  ## The cobra effect
+
+  The story goes that British-ruled Delhi offered a bounty for dead cobras. It worked at first.
+  Then people bred cobras for the reward, the bounty was cancelled, and the farmed snakes were
+  released. The first-order result (fewer cobras) hid the second-order one (more cobras).
+  Historians doubt the details, but the pattern shows up in real policy all the time.
+
+  ## How to use it
+
+  1. Write the decision and its obvious result.
+  2. Ask "and then what?" at least twice.
+  3. Ask who else is affected and how they will change their behaviour.
+  4. Look for effects that arrive late, like habits, incentives and reputation.
+
+sources:
+  - title: Garrett Hardin, "The Cybernetics of Competition" (1963), on unintended consequences
+    url: https://en.wikipedia.org/wiki/Garrett_Hardin
+  - title: Cobra effect
+    url: https://en.wikipedia.org/wiki/Perverse_incentive

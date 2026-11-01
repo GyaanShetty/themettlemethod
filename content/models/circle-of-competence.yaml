@@ -1,0 +1,78 @@
+slug: circle-of-competence
+number: 3
+title: Circle of competence
+category: Self-knowledge
+publish_on: 2026-11-05
+summary: Know what you know, and, more importantly, where that knowledge ends.
+
+scenes:
+  - layout: hook
+    text: Being smart isn't enough.
+    say: Being smart isn't enough. You need to know where your smarts end.
+
+  - layout: title
+    say: This is the circle of competence. Warren Buffett built a fortune on it.
+
+  - layout: statement
+    text: The size of the circle matters less than its edges.
+    say: Everyone has areas they truly understand. The danger isn't a small circle. It's not knowing where it ends.
+
+  - layout: versus
+    left:
+      label: Outside the circle
+      text: Confident guesses.
+      say: Outside it, you make confident guesses and call them insight.
+    right:
+      label: Inside the circle
+      text: Real edge.
+      say: Inside it, you have a real edge.
+
+  - layout: list
+    title: Find your edges
+    items:
+      - text: Could I explain it to a beginner?
+        say: Could I explain it simply to a beginner?
+      - text: Do I know what experts disagree on?
+        say: Do I know where the experts disagree?
+      - text: Have I been wrong here before?
+        say: Have I been wrong here before?
+
+  - layout: quote
+    text: Knowing its boundaries, however, is vital.
+    by: Warren Buffett
+    say: In Buffett's words, the size of the circle isn't very important. Knowing its boundaries, however, is vital.
+
+  - layout: cta
+    say: Follow for one mental model every day.
+
+caption: |
+  Circle of competence: you don't need to know everything, but you must know where your knowledge ends.
+  Warren Buffett's 1996 shareholder letter: the size of the circle isn't very important; knowing its boundaries is vital.
+  Test one area today: could you explain it simply to a beginner?
+tags: [mentalmodels, circleofcompetence, warrenbuffett, selfawareness, thinking, decisionmaking]
+
+article: |
+  Your circle of competence is the set of topics you genuinely understand: you know the basics,
+  the exceptions, and where experts disagree. Outside it, you can still have opinions, but you
+  are guessing.
+
+  Warren Buffett described it in his 1996 letter to Berkshire Hathaway shareholders: investors
+  don't need to be experts on everything, only able to evaluate companies within their circle.
+  "The size of that circle is not very important; knowing its boundaries, however, is vital."
+
+  ## Signs you're outside your circle
+
+  - You can repeat conclusions but not explain why they're true.
+  - You don't know what the strongest counter-argument is.
+  - You have never been wrong in this area, because you have never been tested in it.
+
+  ## How to use it
+
+  1. List the three areas where you make the most important decisions.
+  2. For each, mark it as inside, at the edge, or outside your circle.
+  3. Outside: borrow someone else's circle (an expert, a mentor) or go slower.
+  4. At the edge: that's where deliberate learning grows the circle.
+
+sources:
+  - title: Warren Buffett, 1996 letter to Berkshire Hathaway shareholders
+    url: https://www.berkshirehathaway.com/letters/1996.html

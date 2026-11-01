@@ -1,0 +1,106 @@
+slug: decision-journal
+type: notion
+title: Decision Journal — Think in Mental Models
+icon: 🧭
+tagline: Log big decisions, pick the mental models you used, review the outcome. Get measurably better at deciding.
+
+listing:
+  name: Decision Journal Notion Template | Mental Models Library + Outcome Reviews
+  price: 19
+  summary: Log decisions, tag the mental models behind them, review outcomes later and turn lessons into principles.
+  tags: [notion template, decision journal, mental models, self improvement, journaling, productivity,
+         critical thinking, personal growth, decision making, stoicism, notion journal]
+  description: |
+    Most people never find out whether their decisions were good or just lucky. A decision journal fixes that:
+    write down what you expect before you decide, then check back.
+
+    - **Decisions**: context, options, what you expect, how confident you are, and a review date
+    - **Mental model library**: 20 models with a one-line summary and the question each one asks, linked to every decision that used them
+    - **Outcome reviews**: better, as expected or worse, plus the lesson
+    - **Principles**: lessons that keep repeating become rules, linked back to the decisions that taught them
+
+    Works on Notion's free plan. You get a duplicate link the moment you buy.
+
+home:
+  intro: Write down what you expect before you decide. Check back later. Over time you'll see which mental models actually help you.
+  intro_icon: 🧭
+  steps:
+    - "Decisions: add a decision before you make it. Note the options, what you expect and how confident you are (0–100%)."
+    - "Pick the mental models you used from the library. The library counts how often you rely on each one."
+    - "Set a review date 1–3 months out. When it arrives, record what happened and whether it beat your expectation."
+    - "Principles: when the same lesson shows up twice, write it as a principle and link the decisions behind it."
+  callouts:
+    - {icon: 💡, text: "Judge the decision by what you knew at the time, not only by how it turned out. Good decisions can have bad outcomes."}
+
+views:
+  - {database: Decisions, type: board, note: group by Status}
+  - {database: Decisions, type: calendar, note: by Review on}
+  - {database: Mental Models, type: table, note: group by Category, sort by Times used}
+
+databases:
+  - key: decisions
+    title: Decisions
+    icon: 🧭
+    title_property: Decision
+    properties:
+      Date: {type: date}
+      Area: {type: select, options: [Career, Money, Health, Relationships, Learning, Business]}
+      Context: {type: rich_text}
+      Options considered: {type: rich_text}
+      Expected outcome: {type: rich_text}
+      Confidence: {type: number, format: percent}
+      Models used: {type: relation, target: models, synced_name: Used in}
+      Review on: {type: date}
+      Status: {type: select, options: ["Open:blue", "Reviewing:yellow", "Closed:green"]}
+      Actual outcome: {type: rich_text}
+      Result: {type: select, options: ["Better than expected:green", "As expected:gray", "Worse than expected:red"]}
+      Lesson: {type: rich_text}
+      Review due: {type: formula, expression: 'if(empty(prop("Review on")), "", if(dateBetween(prop("Review on"), now(), "days") <= 0, "Due now", format(dateBetween(prop("Review on"), now(), "days")) + " days"))'}
+    rows:
+      - {key: offer, values: {Decision: Accept the startup offer over the corporate one, Date: "-40d", Area: Career, Context: "Two offers. Startup pays 20% less but owns a product I care about.", Options considered: "Corporate role; startup role; stay and negotiate", Expected outcome: "Faster learning and more ownership within 6 months", Confidence: 0.65, Models used: [models.inversion, models.second-order, models.regret], Review on: "+20d", Status: Open}}
+      - {key: course, values: {Decision: Pay for the data science course, Date: "-120d", Area: Learning, Expected outcome: "Finish it and ship two projects", Confidence: 0.8, Models used: [models.opportunity-cost, models.circle], Review on: "-30d", Status: Closed, Actual outcome: "Finished half; the projects were the useful part", Result: Worse than expected, Lesson: "Commit to the project first; buy the course only for what I'm stuck on."}}
+      - {key: invest, values: {Decision: Put savings in an index fund instead of single stocks, Date: "-90d", Area: Money, Expected outcome: "Lower stress, market returns", Confidence: 0.75, Models used: [models.circle, models.margin], Review on: "+270d", Status: Open}}
+
+  - key: models
+    title: Mental Models
+    icon: 🧠
+    description: A library of thinking tools, linked to the decisions that used them
+    title_property: Model
+    properties:
+      Category: {type: select, options: ["Decision making:orange", "Self-knowledge:purple", "Systems:blue", "Probability:green", "Economics:yellow", "Psychology:pink"]}
+      One-liner: {type: rich_text}
+      Ask yourself: {type: rich_text}
+      Times used: {type: rollup, relation: Used in, property: Decision, function: count}
+    rows:
+      - {key: inversion, values: {Model: Inversion, Category: Decision making, One-liner: "Solve problems backwards: find what guarantees failure, then avoid it.", Ask yourself: "What would make this fail?"}}
+      - {key: second-order, values: {Model: Second-order thinking, Category: Decision making, One-liner: "Consequences have consequences.", Ask yourself: "And then what?"}}
+      - {key: circle, values: {Model: Circle of competence, Category: Self-knowledge, One-liner: "Know where your knowledge ends.", Ask yourself: "Could I explain this to a beginner?"}}
+      - {key: first-principles, values: {Model: First principles, Category: Decision making, One-liner: "Break a problem into basic truths and rebuild from there.", Ask yourself: "What do I know is true, not just assumed?"}}
+      - {key: opportunity-cost, values: {Model: Opportunity cost, Category: Economics, One-liner: "Every yes is a no to the next-best option.", Ask yourself: "What am I giving up?"}}
+      - {key: margin, values: {Model: Margin of safety, Category: Decision making, One-liner: "Leave room for being wrong.", Ask yourself: "What if I'm off by 30%?"}}
+      - {key: regret, values: {Model: Regret minimisation, Category: Self-knowledge, One-liner: "Choose what your 80-year-old self won't regret.", Ask yourself: "Which choice will I regret not making?"}}
+      - {key: occam, values: {Model: "Occam's razor", Category: Probability, One-liner: "Prefer the simplest explanation that fits the facts.", Ask yourself: "What's the simplest story that explains this?"}}
+      - {key: hanlon, values: {Model: "Hanlon's razor", Category: Psychology, One-liner: "Don't assume malice where carelessness explains it.", Ask yourself: "Could this just be a mistake?"}}
+      - {key: base-rates, values: {Model: Base rates, Category: Probability, One-liner: "Start from how often this usually happens.", Ask yourself: "What happens to most people who try this?"}}
+      - {key: sunk-cost, values: {Model: Sunk cost, Category: Economics, One-liner: "Past costs are gone; decide on future value only.", Ask yourself: "Would I start this today?"}}
+      - {key: pareto, values: {Model: Pareto principle, Category: Systems, One-liner: "A few causes drive most results.", Ask yourself: "Which 20% matters most?"}}
+      - {key: feedback-loops, values: {Model: Feedback loops, Category: Systems, One-liner: "Outputs feed back into inputs and amplify or dampen.", Ask yourself: "What reinforces itself here?"}}
+      - {key: incentives, values: {Model: Incentives, Category: Psychology, One-liner: "People respond to what's rewarded.", Ask yourself: "Who benefits from this, and how?"}}
+      - {key: map-territory, values: {Model: Map is not the territory, Category: Self-knowledge, One-liner: "Models simplify reality; don't confuse them with it.", Ask yourself: "What does my picture of this leave out?"}}
+      - {key: confirmation, values: {Model: Confirmation bias, Category: Psychology, One-liner: "We notice evidence that agrees with us.", Ask yourself: "What would change my mind?"}}
+      - {key: compounding, values: {Model: Compounding, Category: Systems, One-liner: "Small gains repeated grow exponentially.", Ask yourself: "What small thing, done daily, would add up?"}}
+      - {key: reversible, values: {Model: One-way and two-way doors, Category: Decision making, One-liner: "Go fast on reversible decisions, slow on irreversible ones.", Ask yourself: "Can I undo this?"}}
+      - {key: probabilistic, values: {Model: Probabilistic thinking, Category: Probability, One-liner: "Think in odds, not certainties.", Ask yourself: "How likely is each outcome, really?"}}
+      - {key: via-negativa, values: {Model: Via negativa, Category: Decision making, One-liner: "Improve by removing, not adding.", Ask yourself: "What should I stop doing?"}}
+
+  - key: principles
+    title: Principles
+    icon: 📜
+    title_property: Principle
+    properties:
+      Area: {type: select, options: [Career, Money, Health, Relationships, Learning, Business]}
+      Why: {type: rich_text}
+      From decisions: {type: relation, target: decisions, synced_name: Principles}
+      Backed by: {type: rollup, relation: From decisions, property: Decision, function: count}
+    rows:
+      - {values: {Principle: Commit to the project before paying for the course, Area: Learning, Why: Courses felt like progress without producing anything., From decisions: [decisions.course]}}

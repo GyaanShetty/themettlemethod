@@ -1,0 +1,63 @@
+name: Build products
+
+# A new product spec (or enough published models for the deck) -> build it -> open a review issue.
+on:
+  push:
+    branches: [main]
+    paths: ["products/*.yaml"]
+  schedule:
+    - cron: "30 13 * * 1"     # Mondays: catches the deck once enough models are live
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: Rebuild one product
+        required: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: engine
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      NOTION_PARENT_PAGE_ID: ${{ secrets.NOTION_PARENT_PAGE_ID }}
+      GH_TOKEN: ${{ github.token }}
+      SLUG: ${{ inputs.slug }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Build and open review issues
+        run: |
+          set -euo pipefail
+          python -m engine product validate
+          gh label create product-review --color F2A33A --description "Built, waiting for /ship" --force
+          git config user.name "engine"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "${SLUG:-}" ]; then
+            [[ "$SLUG" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "bad slug"; exit 1; }
+            slugs="$SLUG"; flags="--force"
+          else
+            slugs="$(python -m engine product pending)"; flags=""
+          fi
+          [ -z "$slugs" ] && { echo "nothing to build"; exit 0; }
+          for s in $slugs; do
+            python -m engine product build "$s" $flags
+            git add state.json "products/assets/$s"
+            git commit -qm "build: $s" && git pull -q --rebase && git push -q
+            python -m engine product issue-body "$s" "$GITHUB_REPOSITORY" > /tmp/body.md
+            name="$(python -c "import yaml;print(yaml.safe_load(open('products/$s.yaml'))['listing']['name'][:90])")"
+            gh issue create --title "Review: $name" --label product-review --body-file /tmp/body.md
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: product-files
+          path: build/products/
+          if-no-files-found: ignore
+          retention-days: 14

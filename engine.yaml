@@ -1,0 +1,35 @@
+# One config for the whole engine. Change the brand once and everything follows:
+# reels, website, product covers.
+
+brand:
+  name: The Mettle Method
+  handle: "@themettlemethod"
+  tagline: Learn something useful every day. Mental models, big ideas and practical skills.
+  site_url: https://gyaanshetty.github.io/themettlemethod
+  gumroad: https://themettlemethod.gumroad.com   # TODO: check your Gumroad username
+  colors:
+    bg: "#14120F"
+    surface: "#1E1B17"
+    ink: "#F3ECDF"
+    muted: "#A79F91"
+    accent: "#F2A33A"
+
+reels:
+  voice: en-US-AndrewMultilingualNeural   # any edge-tts voice: `edge-tts --list-voices`
+  rate: "+6%"
+  fps: 30
+  music: null          # optional: path to a royalty-free mp3 in assets/music/
+  music_volume: 0.10
+
+publish:
+  youtube: true
+  instagram: true
+  youtube_privacy: public    # unaudited API projects are forced to private by YouTube
+  youtube_category: "27"     # Education
+
+# Website tracks. Each folder in content/ is a track; items go live on their publish_on date.
+# Only `models` also become reels.
+tracks:
+  models:   {label: Mental models, blurb: Thinking tools for better decisions.}
+  concepts: {label: Concepts, blurb: Big ideas from science, economics and tech, explained in five minutes.}
+  skills:   {label: Skills, blurb: Practical skills with a step-by-step plan to learn them.}

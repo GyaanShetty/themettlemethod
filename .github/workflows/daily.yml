@@ -1,0 +1,73 @@
+name: Daily reel
+
+# Every day at 18:30 IST: render whatever is due and post it to YouTube Shorts + Instagram Reels,
+# then rebuild the website. Run by hand with a slug to (re)post one.
+on:
+  schedule:
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: Post this one now (leave empty for whatever is due)
+        required: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: engine
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+      YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+      YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      GH_TOKEN: ${{ github.token }}
+      SLUG: ${{ inputs.slug }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+
+      - name: Post due reels
+        run: |
+          set -uo pipefail
+          python -m engine validate
+          if [ -n "${SLUG:-}" ]; then
+            [[ "$SLUG" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "bad slug"; exit 1; }
+            slugs="$SLUG"
+          else
+            slugs="$(python -m engine due)"
+          fi
+          [ -z "$slugs" ] && { echo "nothing due today"; exit 0; }
+          status=0
+          for s in $slugs; do
+            echo "::group::$s"
+            python -m engine reel "$s" && python -m engine post "$s" || status=1
+            echo "::endgroup::"
+          done
+          git config user.name "engine"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git commit -qm "post: $(echo $slugs | tr '\n' ' ')" && git pull -q --rebase && git push -q || true
+          exit $status
+
+      - name: Keep the videos for 30 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reels-${{ github.run_number }}
+          path: build/reels/*.mp4
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Refresh website
+        if: always()
+        run: gh workflow run site.yml

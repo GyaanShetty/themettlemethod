@@ -1,0 +1,95 @@
+name: Ship product
+
+# Comment on a product-review issue (only the repo owner counts):
+#   /ship [public notion link]        live on Gumroad
+#   /ship-draft [public notion link]  Gumroad draft; a later /ship publishes it
+#   /reject [reason]                  logged so the planner avoids it
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: engine
+  cancel-in-progress: false
+
+jobs:
+  ship:
+    if: >-
+      !github.event.issue.pull_request &&
+      contains(github.event.issue.labels.*.name, 'product-review') &&
+      github.event.comment.author_association == 'OWNER' &&
+      (startsWith(github.event.comment.body, '/ship') || startsWith(github.event.comment.body, '/reject'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GUMROAD_ACCESS_TOKEN: ${{ secrets.GUMROAD_ACCESS_TOKEN }}
+      ISSUE: ${{ github.event.issue.number }}
+      COMMENT: ${{ github.event.comment.body }}
+      ISSUE_BODY: ${{ github.event.issue.body }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the command
+        id: cmd
+        run: |
+          set -euo pipefail
+          slug="$(printf '%s' "$ISSUE_BODY" | grep -oP '(?<=<!-- product: )[a-z0-9-]+' | head -1)"
+          [ -n "$slug" ] || { gh issue comment "$ISSUE" -b "No product marker in this issue."; exit 1; }
+          verb="$(printf '%s' "$COMMENT" | awk 'NR==1{print $1}')"
+          printf '%s' "$COMMENT" | awk 'NR==1{$1=""; sub(/^ /,""); print}' > /tmp/arg.txt
+          echo "slug=$slug" >> "$GITHUB_OUTPUT"
+          echo "verb=$verb" >> "$GITHUB_OUTPUT"
+
+      - uses: ./.github/actions/setup
+        with:
+          gumroad: ${{ startsWith(steps.cmd.outputs.verb, '/ship') }}
+
+      - name: Act
+        id: act
+        env:
+          SLUG: ${{ steps.cmd.outputs.slug }}
+          VERB: ${{ steps.cmd.outputs.verb }}
+        run: |
+          set -uo pipefail
+          git config user.name "engine"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          arg="$(tr -d '\r' < /tmp/arg.txt)"
+          case "$VERB" in
+            /reject)
+              python -m engine product reject "$SLUG" "$arg"
+              git add state.json && git commit -qm "reject: $SLUG" && git pull -q --rebase && git push -q
+              gh issue close "$ISSUE" -c "Rejected and logged."
+              exit 0 ;;
+            /ship|/ship-draft)
+              link="$(printf '%s' "$arg" | tr -d '[:space:]<>')"
+              flags=""; [ -n "$link" ] && flags="--link $link"
+              [ "$VERB" = "/ship-draft" ] && flags="$flags --draft"
+              if ! python -m engine product ship "$SLUG" $flags > /tmp/out.txt 2>&1; then
+                { echo "Ship failed:"; echo '```'; tail -25 /tmp/out.txt; echo '```'; } > /tmp/msg.md
+                gh issue comment "$ISSUE" -F /tmp/msg.md; exit 1
+              fi
+              git add state.json && git commit -qm "ship: $SLUG" && git pull -q --rebase && git push -q ;;
+            *) echo "unknown command $VERB"; exit 0 ;;
+          esac
+
+      - name: Report
+        if: startsWith(steps.cmd.outputs.verb, '/ship') && steps.act.outcome == 'success'
+        env:
+          SLUG: ${{ steps.cmd.outputs.slug }}
+          PUBLISHED: ${{ steps.act.outputs.published }}
+          WARNING: ${{ steps.act.outputs.warning }}
+        run: |
+          if [ -n "$WARNING" ]; then
+            gh issue comment "$ISSUE" -b "Saved as a Gumroad draft. Gumroad said: $WARNING"
+          elif [ "$PUBLISHED" = "true" ]; then
+            gh issue close "$ISSUE" -c "Live on Gumroad and added to the website."
+            gh workflow run site.yml
+          else
+            gh issue comment "$ISSUE" -b "Created as a Gumroad draft. Comment /ship to publish it."
+          fi

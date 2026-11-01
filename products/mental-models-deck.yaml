@@ -1,0 +1,20 @@
+slug: mental-models-deck
+type: deck
+title: Mental Models Card Deck
+icon: 🃏
+tagline: Every mental model from the series on a card. The idea on the front, how to use it on the back.
+min_models: 30          # the deck becomes buildable once 30 models have been published
+
+listing:
+  name: Mental Models Card Deck | Printable + Phone-Friendly PDF
+  price: 9
+  summary: One card per mental model. Front, the idea; back, how to use it. Print at home or keep on your phone.
+  tags: [mental models, printable, flash cards, critical thinking, decision making, self improvement, study cards, pdf]
+  description: |
+    Every mental model from the series in one deck, updated as the series grows.
+
+    - **Front**: the model in one line
+    - **Back**: the steps to apply it to a real decision
+    - **Format**: one card per A6 page. Read it on your phone, or print 4 per A4 sheet (duplex) and cut
+
+    Pull one card each morning and use it on something real that day.

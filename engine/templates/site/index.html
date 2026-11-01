@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block head %}{% include "_list.css.html" %}
+<style>
+  .hero { padding: 24px 0 64px; border-bottom: 1px solid var(--line); margin-bottom: 48px; }
+  .hero h1 { font-size: clamp(44px, 9vw, 84px); margin: 18px 0 20px; }
+  .hero p { font-size: 21px; color: var(--muted); max-width: 30ch; margin-bottom: 30px; }
+  .sec { display: flex; justify-content: space-between; align-items: baseline; margin: 56px 0 8px; }
+  .sec h2 { font-size: 30px; }
+  .sec a { font-size: 15px; color: var(--muted); }
+</style>{% endblock %}
+{% block main %}
+<section class="hero">
+  <div class="kicker">Learn something every day</div>
+  <h1>{{ b.name }}</h1>
+  <p>{{ b.tagline }}</p>
+  <a class="btn" href="{{ root }}/{{ tracks|first }}/">Start learning</a>
+  {% if products %}<a class="btn ghost" href="{{ root }}/products/">Templates</a>{% endif %}
+</section>
+
+<div class="sec"><h2>New this week</h2></div>
+{% with items = latest[:6], show_track = true %}{% include "_list.html" %}{% endwith %}
+{% if not latest %}<p class="muted">The first lessons go live soon.</p>{% endif %}
+
+{% for tr, meta in tracks.items() %}{% if by_track[tr] %}
+<div class="sec"><h2>{{ meta.label }}</h2><a href="{{ root }}/{{ tr }}/">All {{ by_track[tr]|length }} →</a></div>
+{% with items = by_track[tr][:3] %}{% include "_list.html" %}{% endwith %}
+{% endif %}{% endfor %}
+
+{% if products %}
+<div class="sec"><h2>Templates</h2><a href="{{ root }}/products/">All →</a></div>
+{% with items = products[:3] %}{% include "_products.html" %}{% endwith %}
+{% endif %}
+{% endblock %}

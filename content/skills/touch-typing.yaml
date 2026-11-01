@@ -1,0 +1,47 @@
+slug: touch-typing
+title: Touch typing
+category: Productivity
+publish_on: 2026-11-04
+summary: Type without looking at the keyboard. Two weeks of short practice pays off for the rest of your life.
+level: Beginner
+time_to_learn: 15 min a day for 2–4 weeks
+
+article: |
+  Touch typing means typing with all ten fingers, each assigned to its own keys, without looking down.
+  Most self-taught typers top out around 30–40 words per minute with two to four fingers. Touch typists
+  commonly reach 60–80, and, more importantly, keep their eyes and attention on the screen.
+
+  If you write code, notes, emails or messages every day, you'll type millions of words. A skill that
+  takes a few weeks to learn and speeds up every one of them is one of the best trades available.
+
+  ## The one rule
+
+  Accuracy first, speed later. Practising fast with mistakes trains the mistakes. Slow down until you hit
+  at least 95% accuracy, and speed will follow on its own.
+
+  ## Expect a dip
+
+  For the first week or two you'll be slower than your old hunt-and-peck method. This is normal and it's
+  where most people quit. Use touch typing only in practice sessions at first, then switch over fully
+  once you pass your old speed.
+
+  ## Setup that helps
+
+  Sit with your wrists level, rest your index fingers on the F and J keys (they have small bumps you can
+  feel), and keep your eyes on the screen. If you keep peeking, put a cloth over your hands for a few days.
+
+steps:
+  - title: Learn the home row
+    detail: "Days 1–3: A S D F and J K L ; with the right fingers, using a free trainer like keybr.com."
+  - title: Add the top and bottom rows
+    detail: "Days 4–10: one new pair of keys at a time. Stay above 95% accuracy before adding more."
+  - title: Practise real words
+    detail: "Week 2: common-word drills on monkeytype.com, 15 minutes a day."
+  - title: Switch over for good
+    detail: "Week 3: stop looking at the keyboard in everyday typing, even when it feels slow."
+  - title: Build speed
+    detail: "Week 4 onward: timed tests, punctuation and numbers. Track your words per minute weekly."
+
+resources:
+  - {title: keybr.com, url: "https://www.keybr.com", free: true}
+  - {title: Monkeytype, url: "https://monkeytype.com", free: true}

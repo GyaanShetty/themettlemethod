@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+<title>{{ b.name }}</title><link>{{ base }}/</link><description>{{ b.tagline }}</description><language>en</language>
+{% for m in latest[:40] %}<item>
+  <title>{{ m.title }}</title><link>{{ base }}{{ m.url[root|length:] }}</link><guid>{{ base }}{{ m.url[root|length:] }}</guid>
+  <pubDate>{{ rfc822(m.publish_on) }}</pubDate><description>{{ m.summary }}</description>
+</item>
+{% endfor %}</channel></rss>

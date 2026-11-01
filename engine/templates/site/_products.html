@@ -1,0 +1,7 @@
+{% for p in items %}
+<div class="prod">
+  <h3>{{ p.name }}</h3>
+  <a class="btn" href="{{ p.gumroad_url }}">{{ p.price_label }}</a>
+  <p>{{ p.summary }}</p>
+</div>
+{% endfor %}

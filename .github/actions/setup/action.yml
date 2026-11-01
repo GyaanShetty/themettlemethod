@@ -1,0 +1,27 @@
+name: Set up engine
+description: Python deps, Chromium, ffmpeg, emoji font
+inputs:
+  gumroad:
+    description: also install the Gumroad CLI
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: pip
+    - shell: bash
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji > /dev/null
+        pip install -q -r requirements.txt
+        python -m playwright install --with-deps chromium > /dev/null
+    - if: inputs.gumroad == 'true'
+      uses: actions/setup-go@v5
+      with:
+        go-version: stable
+        cache: false
+    - if: inputs.gumroad == 'true'
+      shell: bash
+      run: go install github.com/antiwork/gumroad-cli/cmd/gumroad@latest

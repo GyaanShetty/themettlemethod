@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block head %}{% include "_list.css.html" %}<style> h1 { font-size: 52px; margin: 12px 0 8px; } .lead { color: var(--muted); margin-bottom: 24px; }</style>{% endblock %}
+{% block main %}
+<div class="kicker">Products</div>
+<h1>Tools for clearer thinking</h1>
+<p class="lead">Notion templates and printables built around what we teach. Instant download, works on Notion's free plan.</p>
+{% with items = products %}{% include "_products.html" %}{% endwith %}
+{% if not products %}<p class="muted">The first templates are on the way.</p>{% endif %}
+{% endblock %}

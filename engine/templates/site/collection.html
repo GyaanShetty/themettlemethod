@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block head %}{% include "_list.css.html" %}<style> h1 { font-size: 52px; margin: 12px 0 8px; } .lead { color: var(--muted); margin-bottom: 32px; }</style>{% endblock %}
+{% block main %}
+<div class="kicker">{{ items|length }} so far · new ones added regularly</div>
+<h1>{{ meta.label }}</h1>
+<p class="lead">{{ meta.blurb }}</p>
+{% include "_list.html" %}
+{% if not items %}<p class="muted">The first one goes live soon.</p>{% endif %}
+{% endblock %}

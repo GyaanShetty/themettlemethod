@@ -1,0 +1,5 @@
+<ol class="list">{% for m in items %}
+  <li><a href="{{ m.url }}"><span class="n">{% if m.number %}{{ '%02d' % m.number }}{% else %}{{ m.publish_on.strftime('%b %d') }}{% endif %}</span>
+    <h3>{{ m.title }}</h3>
+    <p>{{ m.summary }} <span class="cat">· {% if show_track %}{{ m.track_label }} · {% endif %}{{ m.category }}{% if m.level %} · {{ m.level }}{% endif %}</span></p></a></li>
+{% endfor %}</ol>

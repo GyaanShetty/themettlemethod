@@ -1,0 +1,74 @@
+slug: inversion
+number: 1
+title: Inversion
+category: Decision making
+publish_on: 2026-11-03
+summary: Solve problems backwards. List what guarantees failure, then avoid it.
+
+scenes:
+  - layout: hook
+    text: Stop asking how to succeed.
+    say: Stop asking how to succeed. Ask how you'd fail.
+
+  - layout: title
+    say: This is inversion. One of Charlie Munger's favourite mental models.
+
+  - layout: statement
+    text: Solve the problem backwards.
+    say: Instead of chasing the best outcome, list everything that guarantees the worst one. Then avoid it.
+
+  - layout: list
+    title: What would ruin a career?
+    say: Want a great career? First ask what would wreck it.
+    items:
+      - text: Never finishing anything
+        say: Never finishing anything.
+      - text: Burning bridges
+        say: Burning bridges.
+      - text: Stopping learning at graduation
+        say: And stopping learning the day you graduate.
+
+  - layout: statement
+    kicker: Now flip it
+    text: Avoiding failure does most of the work.
+    say: Avoid those three and you're already ahead of most people.
+
+  - layout: quote
+    text: All I want to know is where I'm going to die, so I'll never go there.
+    by: Charlie Munger
+    say: As Munger put it. All I want to know is where I'm going to die, so I'll never go there.
+
+  - layout: cta
+    say: Follow for one mental model every day.
+
+caption: |
+  Inversion: instead of asking how to win, ask how you'd lose, then avoid it.
+  Mathematician Carl Jacobi's advice was "invert, always invert". Charlie Munger made it famous in investing.
+  Try it today: write down 3 ways your current goal could fail.
+tags: [mentalmodels, inversion, charliemunger, decisionmaking, thinking, selfimprovement]
+
+article: |
+  Most people attack a problem head-on: *how do I make this work?* Inversion flips the question:
+  *what would make this fail?* Failure modes are usually easier to see than paths to success,
+  and avoiding them gets you most of the way there.
+
+  The idea is often traced to the mathematician Carl Jacobi, who advised "invert, always invert".
+  Charlie Munger brought it to investing and business, arguing that a lot of long-term advantage
+  comes from trying to be consistently not stupid rather than trying to be very intelligent.
+
+  ## How to use it
+
+  1. State your goal plainly.
+  2. Ask: what would guarantee the opposite outcome?
+  3. List 3 to 5 concrete failure modes.
+  4. Turn each into a rule you won't break.
+
+  ## Example
+
+  Goal: a healthy relationship. Inverted: what destroys one? Keeping score, never apologising,
+  going silent instead of talking. You now have three things to avoid, which is easier
+  than chasing a vague ideal.
+
+sources:
+  - title: Charlie Munger, 1986 Harvard School commencement speech ("How to guarantee a life of misery")
+    url: https://fs.blog/munger-operating-system-misery/

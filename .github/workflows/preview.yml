@@ -1,0 +1,42 @@
+name: Preview reels
+
+# New or edited mental models get rendered with the real voice as soon as they land,
+# so you can watch them days before they post. Delete or edit the YAML to stop one.
+on:
+  push:
+    branches: [main]
+    paths: ["content/models/*.yaml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: ./.github/actions/setup
+      - name: Render changed models
+        run: |
+          set -euo pipefail
+          python -m engine validate
+          if [ "${{ github.event_name }}" = "push" ]; then
+            files="$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'content/models/*.yaml')"
+          else
+            files="$(ls content/models/*.yaml)"
+          fi
+          for f in $files; do
+            s="$(basename "$f" .yaml)"
+            echo "::group::$s"; python -m engine reel "$s"; echo "::endgroup::"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preview-reels
+          path: |
+            build/reels/*.mp4
+            build/reels/*.jpg
+          retention-days: 14
