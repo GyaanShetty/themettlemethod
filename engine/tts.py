@@ -92,8 +92,17 @@ def speak(text: str, out_wav: Path, voice: str, rate: str = "+0%") -> list[Word]
         try:
             # own thread: Playwright's sync API already runs an event loop in this one
             from concurrent.futures import ThreadPoolExecutor
-            with ThreadPoolExecutor(1) as ex:
-                words = ex.submit(asyncio.run, _edge(text, voice, rate, mp3)).result(timeout=120)
+            import time
+            for attempt in range(5):   # the free service drops the odd request; back off and retry
+                try:
+                    with ThreadPoolExecutor(1) as ex:
+                        words = ex.submit(asyncio.run, _edge(text, voice, rate, mp3)).result(timeout=120)
+                    if words:
+                        break
+                except Exception:  # noqa: BLE001
+                    if attempt == 4:
+                        raise
+                time.sleep(3 * (attempt + 1))
             _to_wav(mp3, out_wav)
             mp3.unlink()
             if not words:
