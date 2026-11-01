@@ -153,10 +153,10 @@ def _home(spec: dict) -> list[dict]:
 
 
 def build(spec: dict, dry: bool = False) -> dict:
-    token = os.environ.get("NOTION_TOKEN", "dry")
-    parent = os.environ.get("NOTION_PARENT_PAGE_ID", "dry")
+    token = os.environ.get("NOTION_TOKEN") or "dry"
+    parent = os.environ.get("NOTION_PARENT_PAGE_ID") or "dry"
     if not dry and "dry" in (token, parent):
-        raise RuntimeError("set NOTION_TOKEN and NOTION_PARENT_PAGE_ID")
+        raise SystemExit("Notion secrets not set yet (NOTION_TOKEN, NOTION_PARENT_PAGE_ID). Add them, then re-run this workflow.")
     n = Client(token, dry)
     home = n("POST", "/pages", {"parent": {"page_id": parent}, "icon": {"type": "emoji", "emoji": spec["icon"]},
                                 "properties": {"title": {"title": _rt(spec["title"])}}, "children": _home(spec)})

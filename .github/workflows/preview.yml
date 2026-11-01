@@ -24,7 +24,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m engine validate
-          if [ "${{ github.event_name }}" = "push" ]; then
+          if [ "${{ github.event_name }}" = "push" ] && git rev-parse -q --verify HEAD~1 >/dev/null; then
             files="$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'content/models/*.yaml')"
           else
             files="$(ls content/models/*.yaml)"
