@@ -3,6 +3,8 @@ on:
   workflow_dispatch:
   push:
     paths: [film/narration.txt]
+permissions:
+  contents: write
 jobs:
   voice:
     runs-on: ubuntu-latest
@@ -14,5 +16,6 @@ jobs:
           while IFS= read -r l; do i=$((i+1)); [ -z "$l" ] && continue
             edge-tts --voice en-GB-RyanNeural --rate=-18% --pitch=-14Hz --text "$l" --write-media out/$(printf %02d $i).mp3
           done < film/narration.txt
-      - uses: actions/upload-artifact@v4
-        with: {name: narration, path: out}
+      - run: |
+          git config user.name GyaanShetty; git config user.email gyaanshetty@gmail.com
+          git checkout --orphan voice-out; git rm -rqf .; git add out; git commit -qm narration; git push -f origin voice-out
