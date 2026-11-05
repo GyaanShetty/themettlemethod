@@ -1,0 +1,18 @@
+name: Voice
+on:
+  workflow_dispatch:
+  push:
+    paths: [film/narration.txt]
+jobs:
+  voice:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install edge-tts
+      - run: |
+          mkdir -p out; i=0
+          while IFS= read -r l; do i=$((i+1)); [ -z "$l" ] && continue
+            edge-tts --voice en-GB-RyanNeural --rate=-18% --pitch=-14Hz --text "$l" --write-media out/$(printf %02d $i).mp3
+          done < film/narration.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: narration, path: out}
