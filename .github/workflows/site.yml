@@ -27,9 +27,11 @@ jobs:
           cache: pip
       - run: pip install -q pyyaml jinja2 markdown requests
       - run: python -m engine site
+      - run: |
+          mkdir -p out && cp -r web/. out/ && cp -r build/site out/library
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: build/site
+          path: out
 
   deploy:
     needs: build
