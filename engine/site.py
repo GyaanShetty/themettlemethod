@@ -48,7 +48,8 @@ def build(today: dt.date | None = None) -> Path:
             i["url"] = f"{root}/{tr}/{i['slug']}/"
             if tr == "models":
                 post = st["posts"].get(i["slug"], {})
-                i["youtube_id"] = post.get("youtube", {}).get("id")
+                yt = post.get("youtube_short", {})
+                i["youtube_id"] = yt.get("external_id") if yt.get("status") == "posted" else None
         items.sort(key=lambda i: (i["publish_on"], i.get("number", 0)), reverse=True)
         by_track[tr] = items
     models = by_track.get("models", [])
@@ -60,7 +61,7 @@ def build(today: dt.date | None = None) -> Path:
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "fonts").mkdir(parents=True)
-    for f in (ROOT / "assets" / "fonts").glob("*.ttf"):
+    for f in (ROOT / "brand" / "fonts").glob("*.woff2"):
         shutil.copy(f, OUT / "fonts" / f.name)
 
     nav = [(m["label"], f"{root}/{t}/") for t, m in trs.items()] + [("Products", f"{root}/products/")]

@@ -33,10 +33,10 @@ def _to_wav(src: Path, dst: Path) -> None:
                     "-c:a", "pcm_s16le", str(dst)], check=True)
 
 
-async def _edge(text: str, voice: str, rate: str, mp3: Path) -> list[Word]:
+async def _edge(text: str, voice: str, rate: str, mp3: Path, pitch: str = "+0Hz") -> list[Word]:
     import edge_tts
 
-    comm = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary")
+    comm = edge_tts.Communicate(text, voice, rate=rate, pitch=pitch, boundary="WordBoundary")
     words: list[Word] = []
     with open(mp3, "wb") as f:
         async for chunk in comm.stream():
@@ -83,10 +83,26 @@ def _attach_punct(text: str, words: list[Word]) -> list[Word]:
     return out
 
 
-def speak(text: str, out_wav: Path, voice: str, rate: str = "+0%") -> list[Word]:
+def _silent(text: str, wav: Path) -> list[Word]:
+    """No voice at all: silence with estimated word timings. For layout previews and tests only."""
+    import wave
+    words, t = [], 0.0
+    for w in text.split():
+        d = 0.18 + 0.045 * len(w)
+        words.append(Word(w, t, t + d))
+        t += d + 0.04
+    with wave.open(str(wav), "wb") as f:
+        f.setnchannels(1); f.setsampwidth(2); f.setframerate(48000)
+        f.writeframes(bytes(2 * int(t * 48000)))
+    return words
+
+
+def speak(text: str, out_wav: Path, voice: str, rate: str = "+0%", pitch: str = "+0Hz") -> list[Word]:
     """Synthesize text to out_wav. Uses espeak-ng when TTS_ENGINE=espeak or edge-tts is unreachable."""
     out_wav.parent.mkdir(parents=True, exist_ok=True)
     engine = os.environ.get("TTS_ENGINE", "edge")
+    if engine == "silent":
+        return _silent(text, out_wav)
     if engine == "edge":
         mp3 = out_wav.with_suffix(".mp3")
         try:
@@ -96,7 +112,7 @@ def speak(text: str, out_wav: Path, voice: str, rate: str = "+0%") -> list[Word]
             for attempt in range(5):   # the free service drops the odd request; back off and retry
                 try:
                     with ThreadPoolExecutor(1) as ex:
-                        words = ex.submit(asyncio.run, _edge(text, voice, rate, mp3)).result(timeout=120)
+                        words = ex.submit(asyncio.run, _edge(text, voice, rate, mp3, pitch)).result(timeout=120)
                     if words:
                         break
                 except Exception:  # noqa: BLE001

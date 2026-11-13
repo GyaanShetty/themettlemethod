@@ -1,0 +1,34 @@
+name: Nightly
+
+# 01:30 IST: end memberships whose paid period has run out, fill circles, send the flame note,
+# and pull yesterday's channel numbers. Each step is safe to run twice.
+on:
+  schedule:
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
+    steps:
+      - name: Run the nightly jobs
+        run: |
+          set -uo pipefail
+          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${CRON_SECRET:-}" ]; then
+            echo "::warning::Not connected: set SUPABASE_URL and CRON_SECRET (see docs/SECRETS.md)."; exit 0
+          fi
+          status=0
+          for fn in nightly ingest-metrics; do
+            code=$(curl -sS --max-time 120 --retry 3 --retry-all-errors -o /tmp/out.json -w '%{http_code}' \
+              -X POST "$SUPABASE_URL/functions/v1/$fn" -H "x-cron-secret: $CRON_SECRET" -H "Content-Type: application/json" -d '{}') || code=000
+            echo "$fn: $code $(head -c 600 /tmp/out.json 2>/dev/null)"
+            [ "$code" = "200" ] || status=1
+          done
+          exit $status

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gyaanshetty.github.io/themettlemethod/library/sitemap.xml

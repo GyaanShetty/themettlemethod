@@ -2,11 +2,11 @@
 {% block head %}<style>
   h1 { font-size: clamp(44px, 8vw, 72px); margin: 14px 0 18px; }
   .lead { font-size: 22px; line-height: 1.45; color: var(--muted); margin-bottom: 40px; max-width: 34ch; }
-  .reel { width: min(100%, 340px); aspect-ratio: 9 / 16; margin: 0 0 48px; border-radius: 18px; overflow: hidden;
+  .reel { width: min(100%, 340px); aspect-ratio: 9 / 16; margin: 0 0 48px; border-radius: 0; overflow: hidden;
           background: var(--surface); border: 1px solid var(--line); }
   .reel iframe { width: 100%; height: 100%; border: 0; display: block; }
   .reel.empty { display: grid; place-items: center; padding: 32px; text-align: center; }
-  .reel.empty b { font: 600 34px/1.05 Fraunces, Georgia, serif; display: block; margin: 12px 0; }
+  .reel.empty b { font: 400 34px/1.05 Marcellus, Georgia, serif; display: block; margin: 12px 0; }
   .prose h2 { font-size: 30px; margin: 44px 0 14px; }
   .prose p, .prose ul, .prose ol { margin-bottom: 18px; }
   .prose ul, .prose ol { padding-left: 24px; }
@@ -14,21 +14,21 @@
   .prose li::marker { color: var(--accent); }
   .prose em { font-style: italic; color: var(--ink); }
   .src { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 15px; color: var(--muted); }
-  .src h3 { font: 700 13px/1 Inter, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .src h3 { font: 600 13px/1 'Hanken Grotesk', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
   .src li { margin: 0 0 6px 18px; }
   .pn { display: flex; justify-content: space-between; gap: 16px; margin-top: 56px; font-size: 15px; }
   .pn a { text-decoration: none; color: var(--muted); } .pn a:hover { color: var(--ink); }
   .facts { display: flex; gap: 12px; flex-wrap: wrap; margin: -16px 0 36px; }
-  .facts span { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 16px; font-size: 15px; }
+  .facts span { background: var(--surface); border: 1px solid var(--line); border-radius: 0; padding: 10px 16px; font-size: 15px; }
   .facts b { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
   .plan { margin-top: 40px; } .plan h2 { font-size: 30px; margin-bottom: 18px; }
   .plan ol { list-style: none; counter-reset: s; }
   .plan li { counter-increment: s; position: relative; padding: 0 0 22px 52px; border-left: 2px solid var(--line); margin-left: 17px; }
   .plan li:last-child { border-color: transparent; }
-  .plan li::before { content: counter(s); position: absolute; left: -18px; top: -2px; width: 34px; height: 34px; border-radius: 50%;
+  .plan li::before { content: counter(s); position: absolute; left: -18px; top: -2px; width: 34px; height: 34px; border-radius: 0;
     background: var(--accent); color: var(--bg); font-weight: 800; display: grid; place-items: center; font-size: 15px; }
   .plan b { display: block; } .plan span { color: var(--muted); font-size: 16px; }
-  .follow { margin-top: 56px; padding: 28px; border-radius: 18px; background: var(--surface); border: 1px solid var(--line); }
+  .follow { margin-top: 56px; padding: 28px; border-radius: 0; background: var(--surface); border: 1px solid var(--line); }
   .follow h3 { font-size: 24px; margin-bottom: 6px; }
   .follow p { color: var(--muted); margin-bottom: 16px; }
 </style>{% endblock %}

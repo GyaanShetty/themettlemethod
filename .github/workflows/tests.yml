@@ -1,0 +1,25 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pip install -q pytest pydantic pillow
+      - run: python -m engine validate
+      - run: python -m pytest -q
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: renders
+          path: build/social/**/*.png
+          retention-days: 14

@@ -8,7 +8,12 @@ const PUBLIC=['index','about',''];
 const sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,detectSessionInUrl:true,flowType:'pkce'}});
 const today=()=>new Date().toLocaleDateString('en-CA');
 const MM=window.MM={sb,user:null,profile:null,standing:null,ready:null};
-MM.signIn=()=>sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname.replace(/[^/]*$/,'')+'home.html'}});
+MM.signIn=async()=>{
+  let on=true;try{const r=await fetch(URL+'/auth/v1/settings',{headers:{apikey:KEY}});on=!!((await r.json()).external||{}).google}catch(e){}
+  if(!on){document.querySelectorAll('#signup,#login').forEach(b=>{b.disabled=true;b.setAttribute('aria-disabled','true')});
+    let n=document.getElementById('mm-gate');if(!n){n=document.createElement('p');n.id='mm-gate';n.setAttribute('role','status');n.style.cssText='margin:14px 0 0;font:400 14px/1.4 "Marcellus SC",Georgia,serif;letter-spacing:.14em;color:#A9A7A0';const at=document.getElementById('login')||document.getElementById('signup');if(at)at.after(n)}
+    if(n)n.textContent='The gates are not open yet. Sign-in opens soon.';return}
+  return sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname.replace(/[^/]*$/,'')+'home.html'}})};
 MM.signOut=async()=>{await sb.auth.signOut();try{Object.keys(localStorage).filter(k=>k.startsWith('tmm.')).forEach(k=>localStorage.removeItem(k))}catch(e){};location.href='index.html'};
 function swapText(map){const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;const ns=[];while(n=w.nextNode())ns.push(n);
   ns.forEach(t=>{let s=t.nodeValue,o=s;for(const[a,b]of map)s=s.split(a).join(b);if(s!==o)t.nodeValue=s});
@@ -50,5 +55,28 @@ MM.sync=async(k,v)=>{if(!MM.user)return;const u=MM.user.id,d=today();
   if(k==='ticks')await sb.from('days').upsert({user_id:u,day:d,ticks:v},{onConflict:'user_id,day'});};
 MM.post=(body,council)=>sb.from('posts').insert({user_id:MM.user.id,body,council});
 MM.feed=()=>sb.from('posts').select('id,body,council,created_at,profiles(display_name,member_no)').order('created_at',{ascending:false}).limit(30);
-MM.ready=load();
+// ---- events: what the dashboard counts. No personal data beyond the member's own id.
+const CLIENT_EVENTS=['visit','signup','oath','seal','vow','post','upgrade_view','invite_sent'];
+MM.track=(name,props)=>{if(!CLIENT_EVENTS.includes(name))return Promise.resolve();
+  return sb.from('events').insert({name,props:props||{},user_id:MM.user?MM.user.id:null}).then(()=>{},()=>{})};
+const _sync=MM.sync;
+MM.sync=async(k,v)=>{await _sync(k,v);if(k==='oath')MM.track('oath');if(k==='review')MM.track('seal');if(k==='vow')MM.track('vow',{days:+(v&&(v.n||v.len))||7})};
+const _post=MM.post;
+MM.post=(body,council)=>{MM.track('post',{council:council||null});return _post(body,council)};
+// invites: a member's link carries ?ref=<code>; the code is claimed once the invited person has signed in
+try{const ref=new URLSearchParams(location.search).get('ref');if(ref&&/^[a-f0-9]{12}$/.test(ref))localStorage.setItem('tmm.ref',ref)}catch(e){}
+MM.invite=async()=>{const {data,error}=await sb.from('referrals').insert({inviter_id:MM.user.id}).select('code').single();
+  if(error)throw error;MM.track('invite_sent');return location.origin+location.pathname.replace(/[^/]*$/,'')+'index.html?ref='+data.code};
+document.addEventListener('mm:ready',async()=>{
+  try{
+    if(!MM.profile.timezone){const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;if(tz)sb.from('profiles').update({timezone:tz}).eq('id',MM.user.id).then(()=>{},()=>{})}
+    if(Date.now()-new Date(MM.profile.created_at).getTime()<10*60*1000&&!localStorage.getItem('tmm.signup')){localStorage.setItem('tmm.signup','1');MM.track('signup')}
+    const ref=localStorage.getItem('tmm.ref');if(ref){localStorage.removeItem('tmm.ref');sb.rpc('claim_invite',{p_code:ref}).then(()=>{},()=>{})}
+  }catch(e){}
+});
+try{if(!sessionStorage.getItem('mm.v.'+page)){sessionStorage.setItem('mm.v.'+page,'1');
+  let from='';try{from=document.referrer?new URL(document.referrer).hostname:''}catch(e){}
+  MM.ready=load().then(()=>MM.track('visit',{page,from}))}else MM.ready=load()}catch(e){MM.ready=load()}
+// the pages' live wiring lives in order.js
+const o=document.createElement('script');o.src='assets/js/order.js';document.head.appendChild(o);
 })();

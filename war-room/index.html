@@ -1,0 +1,262 @@
+<meta name="dash-one-writer">
+<style>
+#dash-root{--dash-gutter:0}
+.wr{background:#0D0D0C;color:#EDEBE5;font:400 15px/1.5 "Hanken Grotesk",var(--font-anthropic-sans);padding:20px clamp(14px,3vw,36px) 48px}
+.wr *{box-sizing:border-box}
+.wr-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.wr h1{font:400 clamp(28px,5vw,44px)/1.05 Marcellus,Georgia,serif;margin:0;letter-spacing:.04em}
+.wr-lab{font:400 12px/1.3 "Marcellus SC",Marcellus,Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:#A9A7A0}
+.wr-key{height:14px;margin:14px 0 6px;background:#D86A5F;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath fill='none' stroke='%23000' stroke-width='3' stroke-linecap='square' d='M0 38H30V2H6V26H18V14'/%3E%3C/svg%3E") repeat-x left center/14px 14px;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath fill='none' stroke='%23000' stroke-width='3' stroke-linecap='square' d='M0 38H30V2H6V26H18V14'/%3E%3C/svg%3E") repeat-x left center/14px 14px}
+.wr-say{color:#A9A7A0;margin:10px 0 0;max-width:70ch}
+.wr-say b{color:#EDEBE5;font-weight:600}
+.wr-nav{display:flex;gap:6px 18px;flex-wrap:wrap;margin:18px 0 0;padding:10px 0;border-top:1px solid #34332F;border-bottom:1px solid #34332F}
+.wr-nav a{color:#A9A7A0;text-decoration:none;font:400 12px "Marcellus SC",Marcellus,Georgia,serif;letter-spacing:.18em;text-transform:uppercase;padding:6px 0}
+.wr-nav a:hover,.wr-nav a:focus-visible{color:#EDEBE5}
+.wr section{margin-top:34px}
+.wr h2{font:400 13px "Marcellus SC",Marcellus,Georgia,serif;letter-spacing:.24em;text-transform:uppercase;color:#EDEBE5;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid #34332F}
+.wr h3{font:400 12px "Marcellus SC",Marcellus,Georgia,serif;letter-spacing:.18em;text-transform:uppercase;color:#A9A7A0;margin:18px 0 8px}
+.wr-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:1px solid #34332F;border-left:1px solid #34332F}
+.wr-tile{border-right:1px solid #34332F;border-bottom:1px solid #34332F;padding:14px;background:#161615;min-height:86px}
+.wr-num{display:block;font:400 30px/1.1 Marcellus,Georgia,serif;font-variant-numeric:tabular-nums;margin-top:6px;color:#EDEBE5}
+.wr-num.alert{color:#D86A5F}.wr-num.paid{color:#C9A961}
+.wr-scroll{overflow-x:auto;border:1px solid #34332F}
+.wr table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+.wr th{font:400 11px "Marcellus SC",Marcellus,Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#A9A7A0;text-align:left;padding:9px 12px;border-bottom:1px solid #34332F;white-space:nowrap;background:#161615}
+.wr td{padding:9px 12px;border-bottom:1px solid #34332F;vertical-align:top}
+.wr tr:last-child td{border-bottom:0}
+.wr td.n,.wr th.n{text-align:right}
+.wr-none{color:#A9A7A0}
+.wr-cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid #34332F;border-left:1px solid #34332F;min-height:120px}
+.wr-cal div{border-right:1px solid #34332F;border-bottom:1px solid #34332F;min-height:54px;padding:5px 6px;font-size:12px;color:#A9A7A0;overflow:hidden}
+.wr-cal div.has{background:#161615;color:#EDEBE5}.wr-cal div.now{outline:1px solid #EDEBE5;outline-offset:-1px}
+.wr-cal i{display:block;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wr-ranks{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));border-top:1px solid #34332F;border-left:1px solid #34332F;min-height:90px}
+.wr-ranks div{border-right:1px solid #34332F;border-bottom:1px solid #34332F;padding:12px;text-align:center}
+.wr-ranks span{display:block}.wr-ranks .r{font:400 22px Marcellus,Georgia,serif;width:44px;height:44px;line-height:42px;border:1px solid #A9A7A0;border-radius:9999px;margin:0 auto 6px}
+.wr-spark{position:relative;min-height:36px;min-width:120px}
+.wr-tip{position:absolute;top:-4px;left:0;transform:translateY(-100%);background:#161615;border:1px solid #34332F;padding:4px 8px;font-size:12px;white-space:nowrap;pointer-events:none}
+.wr-note{color:#A9A7A0;max-width:75ch;margin:10px 0 0}
+.wr code{font:inherit;color:#EDEBE5}
+[data-dash-source-state=refreshing]{opacity:.5}
+</style>
+<div class="wr">
+<div class="wr-top"><h1 id="title">The War Room</h1><span class="wr-lab">&#10016; <span data-draw="today">—</span> &middot; Day <span data-draw="ov" data-f="order_day" data-source="overview" data-field="order_day" data-row="0">—</span> of the order</span></div>
+<div class="wr-key" aria-hidden="true"></div>
+<p class="wr-say"><b data-draw="ov" data-f="members" data-source="overview" data-field="members" data-row="0">—</b> members, <b data-draw="ov" data-f="inner_members" data-source="overview" data-field="inner_members" data-row="0">—</b> in the Inner Order. Publishing is <b data-draw="live" data-source="overview" data-field="publish_live" data-row="0">—</b>. Every figure is read from the database when this page opens.</p>
+<nav class="wr-nav" aria-label="Sections"><a href="#today">Today</a><a href="#funnel">Funnel</a><a href="#money">Money</a><a href="#content">Content</a><a href="#order">The Order</a><a href="#products">Products</a><a href="#channels">Channels</a><a href="#system">System</a></nav>
+
+<section id="today"><h2>&#10016; Today</h2>
+<div class="wr-tiles">
+<div class="wr-tile"><span class="wr-lab">Failed publishes</span><span class="wr-num" data-draw="ov" data-f="failed_publishes" data-alert="1" data-source="overview" data-field="failed_publishes" data-row="0">—</span></div>
+<div class="wr-tile"><span class="wr-lab">Atoms in the database</span><span class="wr-num" data-draw="ov" data-f="atoms" data-source="overview" data-field="atoms" data-row="0">—</span></div>
+<div class="wr-tile"><span class="wr-lab">Hall posts, 7 days</span><span class="wr-num" data-draw="ov" data-f="hall_posts_7d" data-source="overview" data-field="hall_posts_7d" data-row="0">—</span></div>
+</div>
+<h3 id="queue">The next seven days</h3>
+<div class="wr-scroll"><table data-source="queue" data-row-key="id"><thead><tr><th data-field="publish_on">Day</th><th data-field="title">Atom</th><th data-field="type">Type</th><th data-field="status">Status</th><th data-field="channels">Channels</th></tr></thead><tbody data-draw="rows" data-src="queue" data-key="id" data-cols="publish_on,title,type,status,channels"></tbody></table></div>
+<h3 id="failures">Publishes that failed</h3>
+<div class="wr-scroll"><table data-source="failures" data-row-key="content_id,channel"><thead><tr><th data-field="updated_at">When</th><th data-field="content_id">Atom</th><th data-field="channel">Channel</th><th data-field="error">What went wrong</th></tr></thead><tbody data-draw="rows" data-src="failures" data-key="content_id,channel" data-cols="updated_at,content_id,channel,error"></tbody></table></div>
+<p class="wr-note">To send, hold or reschedule an atom: run the <code>Daily</code> workflow on GitHub with the atom's id, or change its <code>status</code> or <code>publish_on</code> in its YAML file. Nothing posts while publishing is a dry run.</p>
+</section>
+
+<section id="funnel"><h2>&#10016; Funnel</h2>
+<div class="wr-scroll"><table data-source="funnel_stages" data-row-key="stage"><thead><tr><th data-field="stage">Stage</th><th class="n" data-field="n">Count</th><th class="n" data-field="rate">Of the stage before</th></tr></thead><tbody data-draw="rows" data-src="funnel_stages" data-key="stage" data-cols="stage,n,rate"></tbody></table></div>
+<p class="wr-note">Followers are the latest count across channels. Visits and sign-ups cover the last 30 days. Day 7, day 21 and paid count those sign-ups who got there.</p>
+<h3 id="cohorts">Weekly cohorts: members still sealing days</h3>
+<div class="wr-scroll"><table data-source="cohorts" data-row-key="cohort_week"><thead><tr><th data-field="cohort_week">Week joined</th><th class="n" data-field="size">Joined</th><th class="n" data-field="d1">Day 1</th><th class="n" data-field="d7">Day 7</th><th class="n" data-field="d21">Day 21</th><th class="n" data-field="d40">Day 40</th><th class="n" data-field="d100">Day 100</th></tr></thead><tbody data-draw="heat"></tbody></table></div>
+</section>
+
+<section id="money"><h2>&#10016; Money</h2>
+<div class="wr-tiles">
+<div class="wr-tile"><span class="wr-lab">Monthly recurring</span><span class="wr-num paid" data-draw="ov" data-f="mrr" data-fmt="money" data-source="overview" data-field="mrr" data-row="0">—</span></div>
+<div class="wr-tile"><span class="wr-lab">Inner Order members</span><span class="wr-num paid" data-draw="ov" data-f="inner_members" data-source="overview" data-field="inner_members" data-row="0">—</span></div>
+<div class="wr-tile"><span class="wr-lab">Cancelled, 30 days</span><span class="wr-num" data-draw="ov" data-f="cancelled_30d" data-source="overview" data-field="cancelled_30d" data-row="0">—</span></div>
+<div class="wr-tile"><span class="wr-lab">Product revenue, this month</span><span class="wr-num" data-draw="ov" data-f="product_revenue_month" data-fmt="money" data-source="overview" data-field="product_revenue_month" data-row="0">—</span></div>
+<div class="wr-tile"><span class="wr-lab">Refunds, this month</span><span class="wr-num" data-draw="ov" data-f="refunds_month" data-fmt="money" data-source="overview" data-field="refunds_month" data-row="0">—</span></div>
+</div>
+<h3 id="streams">Revenue by stream</h3>
+<div class="wr-scroll"><table data-source="revenue" data-row-key="month,stream,currency"><thead><tr><th data-field="month">Month</th><th data-field="stream">Stream</th><th data-field="currency">Currency</th><th class="n" data-field="gross">Gross</th><th class="n" data-field="refunded">Refunded</th><th class="n" data-field="charges">Sales</th></tr></thead><tbody data-draw="rows" data-src="revenue" data-key="month,stream,currency" data-cols="month,stream,currency,gross,refunded,charges"></tbody></table></div>
+<p class="wr-note">Money figures assume one currency. Lifetime value is not shown until there are members who have left.</p>
+</section>
+
+<section id="content"><h2>&#10016; Content</h2>
+<h3 id="calendar">This month</h3>
+<div class="wr-cal" data-draw="cal" data-source="calendar"></div>
+<h3 id="best">Best five by reach</h3>
+<div class="wr-scroll"><table data-source="best" data-row-key="k"><thead><tr><th data-field="title">Atom</th><th data-field="channel">Channel</th><th class="n" data-field="reach">Reach</th><th class="n" data-field="saves">Saves</th><th class="n" data-field="shares">Shares</th></tr></thead><tbody data-draw="rows" data-src="best" data-key="k" data-cols="title,channel,reach,saves,shares"></tbody></table></div>
+<h3 id="worst">Lowest five by reach</h3>
+<div class="wr-scroll"><table data-source="worst" data-row-key="k"><thead><tr><th data-field="title">Atom</th><th data-field="channel">Channel</th><th class="n" data-field="reach">Reach</th><th class="n" data-field="saves">Saves</th><th class="n" data-field="shares">Shares</th></tr></thead><tbody data-draw="rows" data-src="worst" data-key="k" data-cols="title,channel,reach,saves,shares"></tbody></table></div>
+<p class="wr-note">To draft next week's atoms, run the planner prompt in <code>prompts/</code>; the drafts arrive as a pull request for you to approve.</p>
+</section>
+
+<section id="order"><h2>&#10016; The Order</h2>
+<div class="wr-tiles">
+<div class="wr-tile"><span class="wr-lab">Members</span><span class="wr-num" data-draw="ov" data-f="members" data-source="overview" data-field="members" data-row="0">—</span></div>
+<div class="wr-tile"><span class="wr-lab">Flames lit</span><span class="wr-num" data-draw="ov" data-f="flames_lit" data-source="overview" data-field="flames_lit" data-row="0">—</span></div>
+<div class="wr-tile"><span class="wr-lab">Circles</span><span class="wr-num" data-draw="ov" data-f="circles" data-source="overview" data-field="circles" data-row="0">—</span></div>
+<div class="wr-tile"><span class="wr-lab">Circles of five, full</span><span class="wr-num" data-draw="ov" data-f="circles_full" data-source="overview" data-field="circles_full" data-row="0">—</span></div>
+</div>
+<h3 id="ranks">Members at each rank</h3>
+<div class="wr-ranks" data-draw="ranks" data-source="ranks"></div>
+<h3 id="newest">Newest initiates</h3>
+<div class="wr-scroll"><table data-source="newest" data-row-key="member_no"><thead><tr><th class="n" data-field="member_no">No.</th><th data-field="display_name">Name</th><th data-field="tier">Court</th><th data-field="joined">Joined</th></tr></thead><tbody data-draw="rows" data-src="newest" data-key="member_no" data-cols="member_no,display_name,tier,joined"></tbody></table></div>
+</section>
+
+<section id="products"><h2>&#10016; Products</h2>
+<div class="wr-scroll"><table data-source="products" data-row-key="slug"><thead><tr><th data-field="name">Product</th><th data-field="format">Format</th><th class="n" data-field="price">Price</th><th data-field="status">Status</th><th class="n" data-field="sales">Sales</th><th class="n" data-field="revenue">Revenue</th></tr></thead><tbody data-draw="rows" data-src="products" data-key="slug" data-cols="name,format,price,status,sales,revenue"></tbody></table></div>
+<p class="wr-note">To ship or hold a product, comment <code>/ship</code> or <code>/reject</code> on its review issue on GitHub.</p>
+</section>
+
+<section id="channels"><h2>&#10016; Channels</h2>
+<div class="wr-scroll"><table data-source="channel_latest" data-row-key="channel"><thead><tr><th data-field="channel">Channel</th><th class="n" data-field="followers">Followers</th><th class="n" data-field="reach">Reach</th><th class="n" data-field="saves">Saves</th><th class="n" data-field="shares">Shares</th><th>Reach, 30 days</th></tr></thead><tbody data-draw="chan" data-source="channels"></tbody></table></div>
+<p class="wr-note">A channel with no row is not connected yet.</p>
+</section>
+
+<section id="system"><h2>&#10016; System</h2>
+<h3 id="settings">Settings</h3>
+<div class="wr-scroll"><table data-source="settings" data-row-key="key"><thead><tr><th data-field="key">Setting</th><th data-field="value">Value</th><th data-field="note">What it does</th><th data-field="updated_at">Changed</th></tr></thead><tbody data-draw="rows" data-src="settings" data-key="key" data-cols="key,value,note,updated_at"></tbody></table></div>
+<h3 id="jobs">Recent jobs</h3>
+<div class="wr-scroll"><table data-source="jobs" data-row-key="ts"><thead><tr><th data-field="ts">When</th><th data-field="job">Job</th><th data-field="detail">Result</th></tr></thead><tbody data-draw="rows" data-src="jobs" data-key="ts" data-cols="ts,job,detail"></tbody></table></div>
+<p class="wr-note">Settings are shown here and changed in the <code>config</code> table. Secrets are never stored in the database; the <code>connections</code> setting lists, by name only, the ones each channel still lacks, as of the last daily run.</p>
+</section>
+</div>
+<script>
+const IDS = ['overview','queue','failures','funnel','cohorts','revenue','calendar','performance','ranks','newest','products','channels','settings','jobs'];
+for (const id of IDS) dash.loader(id, {
+  description: 'Reads the rows out of the text the Supabase SQL tool returns.',
+  fn: ({answer}) => {
+    const text = typeof answer === 'string' ? answer : (answer && typeof answer.result === 'string' ? answer.result : JSON.stringify(answer));
+    const found = text.match(/<untrusted-data-[0-9a-f-]+>\s*(\[[\s\S]*\])\s*<\/untrusted-data-/);
+    if (!found) throw new Error(text.slice(0, 200));
+    return JSON.parse(found[1]);
+  }
+});
+
+dash.calc('funnel_stages', {
+  title: 'Funnel stages', description: 'Each stage and its share of the stage before.',
+  inputs: ['funnel', 'channels'],
+  fn: (funnel, channels) => {
+    const last = new Map();
+    for (const row of channels) if (row.followers != null) last.set(row.channel, Number(row.followers));
+    const sum = (col) => funnel.reduce((total, row) => total + Number(row[col] || 0), 0);
+    const stages = [['Followers', [...last.values()].reduce((a, b) => a + b, 0)], ['Visits', sum('visits')], ['Sign-ups', sum('signups')],
+      ['Day 7', sum('day7')], ['Day 21', sum('day21')], ['Paid', sum('paid')]];
+    return stages.map(([stage, n], i) => ({stage, n, rate: i && stages[i - 1][1] ? Math.round(1000 * n / stages[i - 1][1]) / 10 + '%' : ''}));
+  }
+});
+dash.calc('channel_latest', {
+  title: 'Latest figures by channel', description: 'The most recent day each channel reported.',
+  inputs: ['channels'],
+  fn: (channels) => {
+    const latest = new Map();
+    for (const row of channels) latest.set(row.channel, row);
+    return [...latest.values()].map((row) => ({channel: row.channel, followers: row.followers, reach: row.reach, saves: row.saves, shares: row.shares}));
+  }
+});
+const ranked = (performance, dir) => performance.filter((row) => row.reach != null)
+  .sort((a, b) => dir * (Number(b.reach) - Number(a.reach))).slice(0, 5)
+  .map((row) => ({k: row.content_id + ' ' + row.channel, title: row.title, channel: row.channel, reach: row.reach, saves: row.saves, shares: row.shares}));
+dash.calc('best', {title: 'Best five by reach', inputs: ['performance'], fn: (performance) => ranked(performance, 1)});
+dash.calc('worst', {title: 'Lowest five by reach', inputs: ['performance'], fn: (performance) => ranked(performance, -1)});
+
+const num = d3.format(',');
+const day = d3.utcFormat('%-d %b %Y'), stamp = d3.utcFormat('%-d %b, %H:%M');
+const money = (cents, cur) => cents == null ? '[PRICE]' : new Intl.NumberFormat(undefined, {style: 'currency', currency: cur || 'USD'}).format(Number(cents));
+const show = (col, v, row) => {
+  if (v == null || v === '') return col === 'price' ? '[PRICE]' : '—';
+  if (/^(gross|refunded|price|revenue)$/.test(col)) return money(v, row && row.currency);
+  if (/^(publish_on|month|cohort_week|joined)$/.test(col)) return day(new Date(v));
+  if (/^(updated_at|ts)$/.test(col)) return stamp(new Date(v));
+  if (typeof v === 'object') return JSON.stringify(v);
+  if (typeof v === 'number' || (/^(n|size|sales|charges|reach|saves|shares|followers|member_no)$/.test(col) && !isNaN(v))) return col === 'member_no' ? String(v).padStart(4, '0') : num(Number(v));
+  return String(v);
+};
+const none = (tbody, text) => { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 12; td.className = 'wr-none'; td.textContent = text; tr.append(td); tbody.replaceChildren(tr); };
+const state = (g) => g.status === 'ok' ? null : g.status === 'loading' ? '—' : g.status === 'error' ? 'Failed to load' : '—';
+const keyOf = (row, keys) => keys.split(',').map((k) => encodeURIComponent(row[k])).join(',');
+
+dash.draw('today', (el) => { el.textContent = d3.timeFormat('%-d %B %Y')(new Date()); });
+dash.draw('ov', (el) => {
+  const g = dash.data('overview'), row = g.status === 'ok' ? g.data[0] : null, f = el.dataset.f;
+  if (!row) { el.textContent = '—'; return; }
+  const v = row[f];
+  el.textContent = el.dataset.fmt === 'money' ? money(v) : v == null ? 'No data yet' : num(Number(v));
+  if (el.dataset.alert) el.classList.toggle('alert', Number(v) > 0);
+});
+dash.draw('live', (el) => {
+  const g = dash.data('overview');
+  el.textContent = g.status !== 'ok' || !g.data[0] ? '—' : g.data[0].publish_live === true ? 'live' : 'a dry run';
+});
+dash.draw('rows', (tbody) => {
+  const g = dash.data(tbody.dataset.src), wait = state(g);
+  if (wait) return none(tbody, wait);
+  if (!g.data || !g.data.length) return none(tbody, 'No data yet');
+  const cols = tbody.dataset.cols.split(','), heads = [...tbody.closest('table').querySelectorAll('th')];
+  tbody.replaceChildren(...g.data.map((row) => {
+    const tr = document.createElement('tr'); tr.dataset.key = keyOf(row, tbody.dataset.key);
+    cols.forEach((c, i) => { const td = document.createElement('td'); td.textContent = show(c, row[c], row); if (heads[i] && heads[i].classList.contains('n')) td.className = 'n'; tr.append(td); });
+    return tr;
+  }));
+});
+dash.draw('heat', (tbody) => {
+  const g = dash.data('cohorts'), wait = state(g);
+  if (wait) return none(tbody, wait);
+  if (!g.data.length) return none(tbody, 'No data yet');
+  tbody.replaceChildren(...g.data.map((row) => {
+    const tr = document.createElement('tr'); tr.dataset.key = encodeURIComponent(row.cohort_week);
+    ['cohort_week', 'size', 'd1', 'd7', 'd21', 'd40', 'd100'].forEach((c, i) => {
+      const td = document.createElement('td'); if (i) td.className = 'n';
+      if (i < 2) td.textContent = show(c, row[c]);
+      else { const share = Number(row.size) ? Number(row[c]) / Number(row.size) : 0; td.textContent = Math.round(share * 100) + '%'; td.style.background = 'rgba(237,235,229,' + (share * .28).toFixed(3) + ')'; }
+      tr.append(td);
+    });
+    return tr;
+  }));
+});
+dash.draw('cal', (el) => {
+  const g = dash.data('calendar'), wait = state(g);
+  if (wait) { el.textContent = wait; return; }
+  const now = new Date(), y = now.getFullYear(), m = now.getMonth(), first = new Date(y, m, 1), days = new Date(y, m + 1, 0).getDate();
+  const by = d3.group(g.data, (row) => String(row.publish_on).slice(0, 10));
+  const cells = [];
+  for (let i = 0; i < (first.getDay() + 6) % 7; i++) cells.push(document.createElement('div'));
+  for (let d = 1; d <= days; d++) {
+    const iso = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0'), list = by.get(iso) || [], c = document.createElement('div');
+    c.textContent = d; if (list.length) c.className = 'has'; if (d === now.getDate()) c.classList.add('now');
+    for (const a of list) { const i = document.createElement('i'); i.textContent = a.title + ' · ' + a.status; c.append(i); }
+    cells.push(c);
+  }
+  el.replaceChildren(...cells);
+  el.setAttribute('aria-label', g.data.length + ' atoms scheduled this month');
+});
+const RANKS = ['Unranked', 'Tiro', 'Neophytos', 'Discipulus', 'Hoplites', 'Centurio', 'Praefectus', 'Strategos', 'Archon', 'Sophos'], ROMAN = ['·', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
+dash.draw('ranks', (el) => {
+  const g = dash.data('ranks'), wait = state(g);
+  if (wait) { el.textContent = wait; return; }
+  el.replaceChildren(...g.data.filter((row) => Number(row.rank) > 0).map((row) => {
+    const c = document.createElement('div'), r = document.createElement('span'), n = document.createElement('span'), k = document.createElement('span');
+    r.className = 'r'; r.textContent = ROMAN[row.rank]; n.className = 'wr-lab'; n.textContent = RANKS[row.rank]; k.className = 'wr-num'; k.textContent = num(Number(row.members));
+    c.append(r, n, k); return c;
+  }));
+});
+dash.draw('chan', (tbody) => {
+  const g = dash.data('channels'), latest = dash.data('channel_latest'), wait = state(g);
+  if (wait) return none(tbody, wait);
+  if (!g.data.length || !latest.data) return none(tbody, 'Not connected');
+  const series = d3.group(g.data, (row) => row.channel);
+  tbody.replaceChildren(...latest.data.map((row) => {
+    const tr = document.createElement('tr'); tr.dataset.key = encodeURIComponent(row.channel);
+    ['channel', 'followers', 'reach', 'saves', 'shares'].forEach((c, i) => { const td = document.createElement('td'); if (i) td.className = 'n'; td.textContent = show(c, row[c]); tr.append(td); });
+    const td = document.createElement('td'), box = document.createElement('div'); box.className = 'wr-spark'; td.append(box); tr.append(td);
+    const pts = (series.get(row.channel) || []).filter((p) => p.reach != null).map((p) => ({t: new Date(p.day), v: Number(p.reach)}));
+    if (pts.length > 1) {
+      const w = 140, h = 36, x = d3.scaleUtc(d3.extent(pts, (p) => p.t), [2, w - 2]), yv = d3.scaleLinear([0, d3.max(pts, (p) => p.v) || 1], [h - 2, 2]);
+      const svg = d3.select(box).append('svg').attr('viewBox', '0 0 ' + w + ' ' + h).attr('width', '100%').attr('height', h).attr('role', 'img').attr('aria-label', 'Reach for ' + row.channel + ' over the last 30 days');
+      svg.append('path').attr('fill', 'none').attr('stroke', '#EDEBE5').attr('stroke-width', 1.5).attr('d', d3.line((p) => x(p.t), (p) => yv(p.v))(pts));
+      const tip = d3.select(box).append('div').attr('class', 'wr-tip').attr('hidden', true);
+      svg.on('pointermove', (event) => { const [px] = d3.pointer(event), p = pts[d3.bisector((q) => q.t).center(pts, x.invert(px))]; tip.attr('hidden', null).text(d3.utcFormat('%-d %b')(p.t) + ': ' + num(p.v)); })
+        .on('pointerleave', () => tip.attr('hidden', true));
+    } else box.textContent = '—';
+    return tr;
+  }));
+});
+</script>

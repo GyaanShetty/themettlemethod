@@ -1,66 +1,67 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
 <style>
-  @font-face { font-family: Fraunces; src: url('{{ fonts }}/Fraunces-SOFT-WONK-opsz-wght.ttf'); font-weight: 100 900; font-style: normal; }
-  @font-face { font-family: Inter; src: url('{{ fonts }}/Inter-opsz-wght.ttf'); font-weight: 100 900; }
-  :root { --bg: {{ c.bg }}; --surface: {{ c.surface }}; --ink: {{ c.ink }}; --muted: {{ c.muted }}; --accent: {{ c.accent }}; }
+  {{ brand_css | safe }}
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
-  body { font-family: Inter, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
-  #stage { position: relative; width: 1080px; height: 1920px;
-    background: radial-gradient(900px 700px at 85% 8%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%), var(--bg); }
-  /* static grain: dithers the dark gradient so the encoder doesn't band it */
-  #stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--night); }
+  body { font-family: var(--font-sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+  #stage { position: relative; width: 1080px; height: 1920px; background: var(--paper); overflow: hidden; }
+  #stage.night { background: var(--night); }
+  /* the photograph: greyscale, slow push-in, under a dark veil so type stays readable */
+  #photo { position: absolute; inset: 0; display: none; }
+  #photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 10%; filter: grayscale(1) contrast(1.15); transform-origin: 50% 30%; }
+  #photo::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.62); }
+  /* static grain */
+  #stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .09; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
-  /* safe area: Instagram/YouTube UI covers the top ~250px, bottom ~420px and right ~130px */
-  .tag { position: absolute; left: 96px; top: 268px; font-size: 30px; font-weight: 600; letter-spacing: .16em;
-         text-transform: uppercase; color: var(--muted); }
-  .tag b { color: var(--accent); font-weight: 700; }
+  /* safe area: the apps cover the top ~250px, bottom ~420px and right ~130px */
+  .tag { position: absolute; left: 96px; right: 140px; top: 268px; padding-bottom: 18px; border-bottom: 1px solid var(--hairline);
+         font: 400 26px var(--font-caps); letter-spacing: .27em; color: var(--ink-muted); white-space: nowrap; overflow: hidden; }
+  .tag:empty { display: none; }
   #main { position: absolute; left: 96px; right: 140px; top: 360px; height: 820px; display: flex; flex-direction: column; justify-content: center; }
-  #cap { position: absolute; left: 96px; right: 140px; top: 1236px; min-height: 180px; text-align: center;
-         font-weight: 800; font-size: 66px; line-height: 1.12; letter-spacing: -.01em; }
-  #cap span { color: var(--ink); }
-  #cap span.on { color: var(--accent); }
-  #cap span.past { color: var(--ink); }
-  #cap span.fut { color: color-mix(in srgb, var(--ink) 55%, transparent); }
+  #cap { position: absolute; left: 0; right: 0; top: 1236px; min-height: 0; padding: 26px 96px; text-align: center;
+         font: 600 64px/1.15 var(--font-sans); background: rgba(0,0,0,.7); }
+  #cap:empty { display: none; }
+  #cap span { color: #EDEBE5; }
+  #cap span.on { color: var(--oxblood); }
+  #cap span.fut { color: #A9A7A0; }
 
-  .serif { font-family: Fraunces, Georgia, serif; font-variation-settings: "opsz" 144, "SOFT" 50; }
-  .kicker { font-size: 34px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 34px; }
+  .serif { font-family: var(--font-display); font-weight: 400; }
+  .kicker { font: 400 28px var(--font-caps); letter-spacing: .29em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 34px; }
 
-  .hook { font-weight: 600; line-height: 1.02; letter-spacing: -.02em; }
-  .title-k { font-size: 36px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
-  .title-n { font-weight: 600; line-height: .98; letter-spacing: -.025em; margin: 30px 0 40px; }
-  .rule { height: 8px; background: var(--accent); border-radius: 4px; transform-origin: left; width: 220px; }
-  .title-c { font-size: 40px; color: var(--muted); margin-top: 40px; font-weight: 500; }
+  .hook { line-height: 1.04; letter-spacing: -.5px; }
+  .title-k { font: 400 28px var(--font-caps); letter-spacing: .29em; text-transform: uppercase; color: var(--ink-muted); }
+  .title-n { line-height: 1.02; margin: 30px 0 40px; }
+  .rule { height: 20px; width: 100%; background: var(--oxblood); transform-origin: left;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath fill='none' stroke='%23000' stroke-width='3' stroke-linecap='square' d='M0 38H30V2H6V26H18V14'/%3E%3C/svg%3E") repeat-x left center/20px 20px; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath fill='none' stroke='%23000' stroke-width='3' stroke-linecap='square' d='M0 38H30V2H6V26H18V14'/%3E%3C/svg%3E") repeat-x left center/20px 20px; }
+  .title-c { font: 400 34px var(--font-sans); color: var(--ink-muted); margin-top: 40px; }
 
-  .stmt { border-left: 8px solid var(--accent); padding-left: 44px; }
-  .stmt p { font-weight: 500; line-height: 1.08; letter-spacing: -.015em; }
+  .stmt { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: 44px 0; }
+  .stmt p { line-height: 1.1; }
 
-  .lt { font-size: 46px; font-weight: 600; color: var(--muted); margin-bottom: 54px; line-height: 1.2; }
-  .li { display: flex; align-items: center; gap: 34px; margin-bottom: 44px; }
-  .li i { flex: none; width: 84px; height: 84px; border-radius: 50%; background: var(--accent); color: var(--bg);
-          font-style: normal; font-weight: 800; font-size: 42px; display: grid; place-items: center; }
-  .li span { font-size: 58px; font-weight: 650; line-height: 1.1; letter-spacing: -.01em; }
+  .lt { font: 400 44px/1.2 var(--font-sans); color: var(--ink-muted); margin-bottom: 54px; }
+  .li { display: flex; align-items: baseline; gap: 34px; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--hairline); }
+  .li i { flex: none; width: 84px; font: 400 56px var(--font-display); font-style: normal; color: var(--ink-muted); }
+  .li span { font: 400 58px/1.12 var(--font-display); }
 
-  .card { border-radius: 28px; padding: 40px 44px; background: var(--surface); border: 3px solid color-mix(in srgb, var(--muted) 30%, transparent); }
-  .card.b { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
-  .card small { display: block; font-size: 30px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
-  .card.b small { color: var(--accent); }
-  .card p { font-size: 62px; font-weight: 500; line-height: 1.1; }
-  .arrow { text-align: center; font-size: 70px; color: var(--accent); margin: 18px 0; line-height: 1; }
+  .card { padding: 40px 44px; background: var(--paper-raised); border: 1px solid var(--hairline); }
+  .card.b { border-color: var(--ink); }
+  .card small { display: block; font: 400 24px var(--font-caps); letter-spacing: .25em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 16px; }
+  .card p { font-size: 62px; line-height: 1.1; }
+  .arrow { text-align: center; font-size: 56px; color: var(--ink-muted); margin: 18px 0; line-height: 1; }
 
-  .qm { font-size: 280px; line-height: .6; color: var(--accent); height: 150px; }
-  .qt { font-style: italic; font-weight: 400; line-height: 1.14; letter-spacing: -.01em; font-variation-settings: "opsz" 144, "SOFT" 100; }
-  .qb { font-size: 40px; font-weight: 600; color: var(--muted); margin-top: 44px; }
+  .qm { display: none; }
+  .qt { line-height: 1.16; }
+  .qb { font: 400 26px var(--font-caps); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-muted); margin-top: 44px; }
 
-  .cta-n { font-weight: 600; line-height: 1; letter-spacing: -.02em; }
-  .cta-t { font-size: 46px; color: var(--muted); margin: 34px 0 60px; line-height: 1.3; font-weight: 500; }
-  .pill { display: inline-block; align-self: flex-start; background: var(--accent); color: var(--bg); font-weight: 800; font-size: 50px;
-          padding: 26px 46px; border-radius: 999px; }
-  .url { font-size: 36px; color: var(--muted); margin-top: 40px; font-weight: 500; }
+  .end { align-items: center; text-align: center; }
+  .end img { width: 420px; height: 420px; filter: invert(1) brightness(.93); }
+  .cta-n { font: 400 44px var(--font-display); letter-spacing: .14em; margin-top: 56px; }
+  .cta-t { font: 400 84px var(--font-script); margin: 28px 0 36px; }
+  .url { font: 400 26px var(--font-caps); letter-spacing: .25em; color: var(--ink-muted); }
 </style></head>
-<body><div id="stage"><div class="tag" id="tag"></div><div id="main"></div><div id="cap"></div></div>
+<body><div id="stage"><div id="photo"><img id="pimg" alt=""></div><div class="tag" id="tag"></div><div id="main"></div><div id="cap"></div></div>
 <script>
 const D = {{ data|tojson }};
 const S = D.scene, $ = s => document.querySelector(s);
@@ -71,7 +72,8 @@ const A = (at, html, cls='') => `<div class="a ${cls}" data-at="${at}">${html}</
 
 // ---- layouts ---------------------------------------------------------------
 const num = String(D.number).padStart(2, '0');
-let tag = `<b>Nº ${num}</b> · ${esc(D.title)}`;
+let tag = `✠ ${esc(D.pillar)}`;
+let photo = false, night = false;
 let m = '';
 switch (S.layout) {
   case 'hook':
@@ -79,9 +81,9 @@ switch (S.layout) {
     m = A(0, `<p class="serif hook fit" data-max="132" data-min="78">${esc(S.text)}</p>`);
     break;
   case 'title':
-    tag = '';
-    m = A(0, `<div class="title-k">Mental model Nº ${num}</div>`) +
-        A(.12, `<div class="serif title-n fit" data-max="170" data-min="84">${esc(D.title)}</div>`) +
+    tag = ''; photo = !!D.image;
+    m = A(0, `<div class="title-k">✠ ${esc(D.pillar)} · ${esc(D.numeral)}</div>`) +
+        A(.12, `<div class="serif title-n fit" data-max="120" data-min="72">${esc(D.title)}</div>`) +
         A(.3, `<div class="rule"></div>`, 'grow') +
         A(.4, `<div class="title-c">${esc(D.category)}</div>`);
     break;
@@ -102,24 +104,26 @@ switch (S.layout) {
         A(bAt + .1, `<div class="card b"><small>${esc(S.right.label)}</small><p class="serif">${esc(S.right.text)}</p></div>`);
     break; }
   case 'quote':
-    m = A(0, `<div class="qm serif">“</div>`) +
-        A(.15, `<p class="serif qt fit" data-max="84" data-min="52">${esc(S.text)}</p>`) +
-        (S.by ? A(.6, `<div class="qb">— ${esc(S.by)}</div>`) : '');
+    m = A(.15, `<p class="serif qt fit" data-max="84" data-min="52">${esc(S.text)}</p>`) +
+        (S.by ? A(.6, `<div class="qb">${esc(S.by)}</div>`) : '');
     break;
   case 'cta':
-    tag = '';
-    m = A(0, `<div class="serif cta-n fit" data-max="124" data-min="70">${esc(D.brand.name)}</div>`) +
-        A(.15, `<div class="cta-t">${esc(D.brand.tagline)}</div>`) +
-        A(.35, `<div class="pill">Follow ${esc(D.brand.handle)}</div>`) +
-        (D.brand.site ? A(.5, `<div class="url">${esc(D.brand.site)}</div>`) : '');
+    tag = ''; night = true;
+    m = `<div class="end" style="display:flex;flex-direction:column">` +
+        A(0, `<img src="${D.seal}" alt="">`) +
+        A(.15, `<div class="cta-n">THE METTLE METHOD</div>`) +
+        A(.3, `<div class="cta-t">Obey the process</div>`) +
+        A(.45, `<div class="url">${esc(D.brand.handle.toUpperCase())}</div>`) + `</div>`;
     break;
 }
 $('#tag').innerHTML = tag;
+if (photo) { $('#photo').style.display = 'block'; $('#pimg').src = D.image; }
+if (night) $('#stage').classList.add('night');
 $('#main').innerHTML = m;
 
 // ---- fit big type: largest size that keeps every word on one line and the block inside its box
 const box = $('#main');
-document.fonts.ready.then(() => {
+Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode().catch(() => {}))]).then(() => {
   document.querySelectorAll('.fit').forEach(el => {
     let lo = +el.dataset.min, hi = +el.dataset.max;
     const ok = px => { el.style.fontSize = px + 'px';
@@ -154,6 +158,7 @@ window.render = t => {
     if (el.classList.contains('grow')) el.firstChild.style.transform = `scaleX(${q})`;
     key += q.toFixed(3) + ',';
   });
+  if (photo) { const z = 1 + Math.min(t, 8) * .012; $('#pimg').style.transform = `scale(${z.toFixed(4)})`; key += z.toFixed(4) + ','; }
   let ci = -1, wi = -1;
   if (capOn) {
     W.forEach((w, i) => { if (w.s <= t + .03) wi = i; });

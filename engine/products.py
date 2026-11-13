@@ -91,7 +91,7 @@ def _ctx(spec: dict, **extra) -> dict:
     b = config()["brand"]
     head = re.split(r"\s[—–|:]\s", spec["title"], maxsplit=1)[0]
     return {"spec": spec, "b": b, "c": b["colors"], "headline": head,
-            "fonts": (ROOT / "assets" / "fonts").as_uri(),
+            "fonts": (ROOT / "brand" / "fonts").as_uri(),
             "size": 78 if len(head) <= 16 else 62 if len(head) <= 26 else 50, **extra}
 
 

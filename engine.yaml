@@ -4,19 +4,14 @@
 brand:
   name: The Mettle Method
   handle: "@themettlemethod"
-  tagline: Learn something useful every day. Mental models, big ideas and practical skills.
+  tagline: One lesson a day. Mind, Body, Faith, Relationships.
   site_url: https://gyaanshetty.github.io/themettlemethod
   gumroad: https://themettlemethod.gumroad.com   # TODO: check your Gumroad username
-  colors:
-    bg: "#14120F"
-    surface: "#1E1B17"
-    ink: "#F3ECDF"
-    muted: "#A79F91"
-    accent: "#F2A33A"
 
 reels:
-  voice: en-US-AndrewMultilingualNeural   # any edge-tts voice: `edge-tts --list-voices`
-  rate: "+6%"
+  voice: en-GB-RyanNeural   # slower and lower, per the brand
+  rate: "-18%"
+  pitch: "-14Hz"
   fps: 30
   music: null          # optional: path to a royalty-free mp3 in assets/music/
   music_volume: 0.10

@@ -22,7 +22,11 @@ class ContentError(ValueError):
 
 
 def config() -> dict:
-    return yaml.safe_load((ROOT / "engine.yaml").read_text(encoding="utf-8"))
+    cfg = yaml.safe_load((ROOT / "engine.yaml").read_text(encoding="utf-8"))
+    from . import brand  # colours come from the brand tokens, never from this file
+    cfg["brand"]["colors"] = {"bg": brand.color("paper"), "surface": brand.color("paper-raised"), "ink": brand.color("ink"),
+                              "muted": brand.color("ink-muted"), "accent": brand.color("oxblood")}
+    return cfg
 
 
 def load_model(slug_or_path: str | Path) -> dict:
