@@ -79,6 +79,11 @@ def cmd_daily(a) -> int:
         ledger.mirror_content(every, sha)
     except Exception as e:  # noqa: BLE001
         print(f"::warning::content not mirrored to Supabase: {e}")
+    try:  # names of missing secrets only, never a value; the War Room shows this
+        ledger.upsert("config", [{"key": "connections", "value": publish.connections(), "is_public": False,
+                                  "note": "Secrets each channel still lacks, by name, as of the last daily run."}], "key")
+    except Exception as e:  # noqa: BLE001
+        print(f"::warning::connections not recorded: {e}")
     todo = [atoms.get(a.atom)] if a.atom else publish.due(day, every)
     if not todo:
         print("nothing due")

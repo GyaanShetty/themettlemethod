@@ -75,3 +75,27 @@ Decisions to confirm
 Not verified
 - The member pages were checked signed out only (layout, no script errors of their own). Google sign-in is not set up, so no page has been seen with a real member's data.
 - No real Gumroad ping has reached the webhook.
+
+## Phase 6: metrics (13 Nov 2026)
+- `ingest-metrics` Edge Function deployed: Instagram, Threads, YouTube and Gumroad, each skipped as "not connected" until its secrets exist. The nightly workflow calls it.
+- The daily run now records which secrets each channel still lacks, by name only, in the `connections` setting.
+- None of the four platform calls has been run against a real account. Treat their field names as unverified until the first connected run.
+
+## Phase 7: the War Room (13 Nov 2026)
+- Built on the dashboard artifact type: https://claude.ai/artifact/TWKL9FofnU7wByq2GLnLZ3. Its page source is kept in `war-room/index.html`.
+- Fourteen live queries against the views and tables, run through the owner's Supabase connection. No key of any kind is in the page.
+- Sections: Today, Funnel, Money, Content, The Order, Products, Channels, System. Every empty state says "No data yet" or "Not connected".
+- The page ran in the owner's open dashboard: all fourteen sources loaded and the page check passed.
+
+What it does not do, against the brief
+- No action buttons. The dashboard type lets a page read through a connector but gives no safe way to press a button that writes, and it has no network access to call an Edge Function. Publish, hold, reschedule, approve, ship and settings are done from GitHub and the `config` table; `docs/RUNBOOK.md` has each step.
+- The brand fonts cannot be loaded by a dashboard page. It names Marcellus and Hanken Grotesk and falls back to Georgia and the system sans where they are not installed. Colours, hairlines, square corners and the Greek key band follow the brand.
+- No atom previews (plate, carousel, reel) inside the dashboard; they are in each `Daily` and `Tests` run's artifacts.
+- The cohort view is a shaded table, and the month calendar lists atoms by day; neither uses the dataviz skill's charts, since there is no data to shape them on yet.
+- Lighthouse was not run on the site or the dashboard.
+
+## Phase 8: hardening (13 Nov 2026)
+- Rate limiting on the webhook through `rate_limit_hit`. Publish failures open a GitHub issue assigned to the owner.
+- `scripts/backup.sh` and `scripts/export.sql`.
+- Security advisors clean after the last migration.
+- Not done: rate limits on `nightly`, `circle-assign` and `ingest-metrics` beyond their secret check.
