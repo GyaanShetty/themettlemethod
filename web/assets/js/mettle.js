@@ -8,7 +8,12 @@ const PUBLIC=['index','about',''];
 const sb=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,detectSessionInUrl:true,flowType:'pkce'}});
 const today=()=>new Date().toLocaleDateString('en-CA');
 const MM=window.MM={sb,user:null,profile:null,standing:null,ready:null};
-MM.signIn=()=>sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname.replace(/[^/]*$/,'')+'home.html'}});
+MM.signIn=async()=>{
+  let on=true;try{const r=await fetch(URL+'/auth/v1/settings',{headers:{apikey:KEY}});on=!!((await r.json()).external||{}).google}catch(e){}
+  if(!on){document.querySelectorAll('#signup,#login').forEach(b=>{b.disabled=true;b.setAttribute('aria-disabled','true')});
+    let n=document.getElementById('mm-gate');if(!n){n=document.createElement('p');n.id='mm-gate';n.setAttribute('role','status');n.style.cssText='margin:14px 0 0;font:400 14px/1.4 "Marcellus SC",Georgia,serif;letter-spacing:.14em;color:#A9A7A0';const at=document.getElementById('login')||document.getElementById('signup');if(at)at.after(n)}
+    if(n)n.textContent='The gates are not open yet. Sign-in opens soon.';return}
+  return sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname.replace(/[^/]*$/,'')+'home.html'}})};
 MM.signOut=async()=>{await sb.auth.signOut();try{Object.keys(localStorage).filter(k=>k.startsWith('tmm.')).forEach(k=>localStorage.removeItem(k))}catch(e){};location.href='index.html'};
 function swapText(map){const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;const ns=[];while(n=w.nextNode())ns.push(n);
   ns.forEach(t=>{let s=t.nodeValue,o=s;for(const[a,b]of map)s=s.split(a).join(b);if(s!==o)t.nodeValue=s});

@@ -99,3 +99,9 @@ What it does not do, against the brief
 - `scripts/backup.sh` and `scripts/export.sql`.
 - Security advisors clean after the last migration.
 - Not done: rate limits on `nightly`, `circle-assign` and `ingest-metrics` beyond their secret check.
+
+## The site, made ready to go live (13 Nov 2026)
+- The eight pages carried every image inline as text: 19 MB of HTML. The 32 distinct images now live in `web/assets/img/` and are shared and cached across pages. The pages are 6 to 37 KB each; images below the first two load as they come into view.
+- Before-and-after screenshots of all nine pages match, apart from the turning coin being caught at a different angle.
+- Added a page description, share image, favicon and touch icon to every page; a 404 page; `robots.txt`.
+- Sign-in: Google sign-in is not switched on in Supabase yet. The buttons now check first and say "The gates are not open yet. Sign-in opens soon." instead of landing on an error page.
