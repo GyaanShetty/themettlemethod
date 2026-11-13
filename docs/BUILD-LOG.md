@@ -38,3 +38,21 @@ Deviations, to confirm:
 - The headlines on the five existing atoms were written during this build and need the owner's eye.
 
 Not done yet in this phase: reel re-skin, story and carousel series numbering, the grid-puzzle splitter, email HTML, Series II and III comparison.
+
+## Phase 3, finished (13 Nov 2026)
+- Reels re-skinned from the brand tokens: title card over the photograph with a slow push-in and grain, captions in Hanken 600 at 64px on a 70% night band, end card on night with the white seal. Voice set to en-GB-RyanNeural, rate -18%, pitch -14Hz.
+- The library site and product templates now use the brand fonts and colours. The old Fraunces and Inter files are gone.
+- `engine/text.py`: thread (3 to 5 lines, under 500 characters) and the morning email (HTML and plain text, one-click stop).
+- `engine/grid.py`: the grid puzzle. Post 1 is the bottom-right tile, post 9 the top-left; a test rebuilds the master from the tiles.
+- `TTS_ENGINE=silent` renders reel layouts with no voice, for previews and tests. The real voice only runs on Actions.
+- Not done: the reel video itself has not been rendered end to end in this build (edge-tts is unreachable here); only its stills were checked. Series II and III were not re-rendered from atoms or compared with the shipped PNGs, since they are not atoms in the repo yet.
+
+## Phase 4: publishers (13 Nov 2026)
+- `engine/publish.py`: Instagram plate, carousel, story and reel; YouTube Shorts; Threads; email through Resend or Buttondown; the site. One interface, one `run()` that decides live or dry run.
+- Live needs all four: atom approved, `publish_live` true in the config table, the channel's secrets present, nothing already posted. Otherwise it is a dry run that prints what would be sent.
+- `engine/net.py`: every external call has a timeout, retries with backoff and an `external_call` event.
+- `engine/ledger.py`: outcomes go to `state.json` and are mirrored to `publications`. A second run posts nothing twice.
+- Only today's and yesterday's atoms are picked up, so turning live on cannot release a backlog.
+- `daily.yml` now runs at 06:15 IST, covers every channel and opens a GitHub issue assigned to the owner when a publish fails.
+- Storage bucket `media` created (public read, service-role write).
+- None of the live paths has been exercised against the real APIs. No secrets exist yet, so only the dry-run path is proven.

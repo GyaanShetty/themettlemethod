@@ -48,7 +48,8 @@ def build(today: dt.date | None = None) -> Path:
             i["url"] = f"{root}/{tr}/{i['slug']}/"
             if tr == "models":
                 post = st["posts"].get(i["slug"], {})
-                i["youtube_id"] = post.get("youtube", {}).get("id")
+                yt = post.get("youtube_short", {})
+                i["youtube_id"] = yt.get("external_id") if yt.get("status") == "posted" else None
         items.sort(key=lambda i: (i["publish_on"], i.get("number", 0)), reverse=True)
         by_track[tr] = items
     models = by_track.get("models", [])
