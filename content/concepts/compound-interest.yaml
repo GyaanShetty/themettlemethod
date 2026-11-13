@@ -4,6 +4,16 @@ category: Economics
 publish_on: 2026-11-03
 summary: Growth on top of growth. Why small, steady gains beat big, rare ones.
 
+# Plate, carousel, story, thread and email read these.
+pillar: mind
+kicker: Concept
+headline: |-
+  Small gains,
+  kept, grow.
+image: art/laurel
+status: approved
+channels: [instagram_plate, instagram_carousel, instagram_story, threads, email, site]
+
 article: |
   Compound interest is what happens when the returns on something start earning returns of their own.
   Put ₹10,000 in an account paying 10% a year. After year one you have ₹11,000. In year two you earn

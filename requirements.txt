@@ -4,3 +4,6 @@ markdown>=3.5
 requests>=2.31
 playwright>=1.45
 edge-tts>=7.0
+pydantic>=2.6
+pillow>=10.0
+pytest>=8.0

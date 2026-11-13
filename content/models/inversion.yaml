@@ -5,6 +5,16 @@ category: Decision making
 publish_on: 2026-11-03
 summary: Solve problems backwards. List what guarantees failure, then avoid it.
 
+# Plate, carousel, story, thread and email read these.
+pillar: mind
+kicker: Mental model
+headline: |-
+  Solve the problem
+  backwards.
+image: art/stoic
+status: approved
+channels: [instagram_plate, instagram_carousel, instagram_story, instagram_reel, youtube_short, threads, email, site]
+
 scenes:
   - layout: hook
     text: Stop asking how to succeed.

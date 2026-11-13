@@ -1,0 +1,59 @@
+<!doctype html><html><head><meta charset="utf-8"><style>{{ brand_css | safe }}
+:root{--w:{{ w }}px;--h:{{ h }}px;{% if pad_y %}--pad-y:{{ pad_y }}px{% endif %}}
+{{ css | safe }}</style></head><body class="{{ theme }}">
+{%- macro head() -%}
+<div class="head" data-box="header"><span>✠ {{ label }}</span><span class="num">{{ numeral }}</span></div>
+{%- endmacro -%}
+{%- macro foot() -%}
+<div class="foot" data-box="footer"><img class="seal" src="{{ seal }}" width="80" height="80" alt=""><div class="who"><b>THE METTLE METHOD</b><span>@THEMETTLEMETHOD</span></div><span class="motto">Obey the process</span></div>
+{%- endmacro -%}
+{%- macro window(height) -%}
+<div class="window" style="height:{{ height }}px" data-box="image"><img src="{{ image }}" alt=""><div class="grain"></div><i class="tick tl"></i><i class="tick tr"></i><i class="tick bl"></i><i class="tick br"></i></div>
+{%- endmacro -%}
+{%- macro words() -%}
+<div class="text" data-box="text"><div class="kicker" data-box="kicker">{{ a.kicker }}</div><div class="headline" id="headline" data-box="headline">{{ headline_html }}</div><div class="sub" data-box="sub">{{ a.sub }}</div>{% if a.source %}<div class="source" data-box="source">{{ a.source }}</div>{% endif %}</div>
+{%- endmacro -%}
+
+{% if kind in ("plate", "story", "cover") %}
+<div class="page" data-stack>{{ head() }}{{ window(win) }}<div class="meander"></div>{{ words() }}{{ foot() }}</div>
+{% elif kind == "slide-image" %}
+<div class="page full"><div class="window" data-box="image"><img src="{{ image }}" alt=""><div class="shade"></div><div class="grain"></div></div>
+<div class="cap" data-box="caption"><div class="kicker" style="color:#A9A7A0">{{ label }}</div><div class="idea">{{ a.title }}.</div></div></div>
+{% elif kind == "slide-text" %}
+<div class="page" data-stack>{{ head() }}<div class="text" data-box="text"><div class="idea" data-box="idea">{{ a.sub }}</div><div class="body" data-box="body">{{ lead }}</div>{% if a.source %}<div class="source">{{ a.source }}</div>{% endif %}</div><div class="next">Next →</div>{{ foot() }}</div>
+{% elif kind == "slide-end" %}
+<div class="page centre"><img class="seal" src="{{ seal }}" width="520" height="520" alt="" data-box="seal"><div class="motto" style="font-size:72px" data-box="motto">Obey the process</div><div class="kicker" data-box="cta">One lesson a day · Link in bio</div></div>
+{% elif kind == "product" %}
+<div class="page cover{{ " small" if w < 700 }}"><img class="seal" src="{{ seal }}" width="{{ 440 if w > 700 else 300 }}" height="{{ 440 if w > 700 else 300 }}" alt="" data-box="seal"><div class="text" data-box="text"><div class="kicker" data-box="kicker">{{ p.kicker }}</div><div class="headline" id="headline" data-box="headline">{{ p.name }}</div>{% if w > 700 %}<div class="sub" data-box="sub">{{ p.sub }}</div>{% endif %}</div></div>
+{% endif %}
+<script>
+window.check = async (sizes) => {
+  await document.fonts.ready;
+  const errs = [], h = document.getElementById('headline');
+  let lines = null;
+  if (h && sizes) {
+    let ok = false;
+    for (const [i, s] of sizes.entries()) {
+      h.style.fontSize = s + 'px';
+      lines = Math.round(h.getBoundingClientRect().height / (s * 1.04));
+      if (lines <= i + 1) { ok = true; break; }
+    }
+    if (!ok) errs.push('headline runs to ' + lines + ' lines');
+  }
+  const page = document.querySelector('.page').getBoundingClientRect();
+  for (const el of document.querySelectorAll('[data-box]')) {
+    const r = el.getBoundingClientRect(), n = el.dataset.box;
+    const clips = getComputedStyle(el).overflowY !== 'visible';  // unclipped boxes are caught by their clipping parent
+    if ((clips && el.scrollHeight > el.clientHeight + 1) || el.scrollWidth > el.clientWidth + 1) errs.push('overflow: ' + n);
+    if (r.left < page.left - .5 || r.right > page.right + .5 || r.top < page.top - .5 || r.bottom > page.bottom + .5) errs.push('outside the page: ' + n);
+    if (r.width < 1 || r.height < 1) errs.push('empty: ' + n);
+  }
+  for (const stack of document.querySelectorAll('[data-stack]')) {
+    const kids = [...stack.children].map(k => k.getBoundingClientRect());
+    for (let i = 0; i + 1 < kids.length; i++) if (kids[i + 1].top < kids[i].bottom - .5) errs.push('overlap between rows ' + i + ' and ' + (i + 1));
+  }
+  const imgs = [...document.images];
+  await Promise.all(imgs.map(i => i.decode().catch(() => errs.push('image failed: ' + i.src))));
+  return {errs, lines};
+};
+</script></body></html>
