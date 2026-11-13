@@ -27,9 +27,9 @@ jobs:
           set -euo pipefail
           if [ -z "${SUPABASE_ACCESS_TOKEN:-}" ]; then echo "::warning::Not connected: set SUPABASE_ACCESS_TOKEN (see docs/SECRETS.md)."; exit 0; fi
           # Webhooks and cron jobs check their own secrets; the admin functions check the admins table.
-          for fn in payments-webhook nightly ingest-metrics; do
+          for fn in payments-webhook nightly circle-assign ingest-metrics; do
             [ -d "supabase/functions/$fn" ] && supabase functions deploy "$fn" --project-ref "$PROJECT_REF" --no-verify-jwt
           done
-          for fn in circle-assign admin; do
+          for fn in admin; do
             [ -d "supabase/functions/$fn" ] && supabase functions deploy "$fn" --project-ref "$PROJECT_REF"
           done

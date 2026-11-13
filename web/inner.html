@@ -1,0 +1,37 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Inner Order · The Mettle Method</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Marcellus+SC&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#0D0D0C;--raised:#161615;--fg:#EDEBE5;--mu:#A9A7A0;--hl:#34332F;--ac:#D86A5F;--brass:#C9A961;--brass-soft:#221D12;--display:"Marcellus",Georgia,serif;--caps:"Marcellus SC",Georgia,serif;--sans:"Hanken Grotesk",Arial,sans-serif;color-scheme:dark}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.6 var(--sans)}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))} .wrap{max-width:980px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance} .lab{font:400 14px/1.3 var(--caps);letter-spacing:.14em;color:var(--mu)}
+.nav{display:flex;align-items:center;gap:16px;padding-block:14px;border-bottom:1px solid var(--hl);flex-wrap:wrap} .nav img{width:44px;height:44px;filter:invert(1) brightness(.93)} .nav .nm{font:400 17px/1 var(--display);letter-spacing:.18em}
+.nav nav{margin-left:auto;display:flex;gap:26px;flex-wrap:wrap;font:400 15px/1 var(--caps);letter-spacing:.1em} .nav nav a{color:var(--mu);text-decoration:none}
+.hero{padding-block:72px 40px} .hero .lab{color:var(--brass)} .hero h1{font-size:clamp(44px,7vw,88px);line-height:1;margin-top:14px} .hero p{max-width:620px;color:var(--mu);font-size:20px;margin:20px 0 0}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-top:1px solid var(--hl);border-left:1px solid var(--hl)}
+.col{border-right:1px solid var(--hl);border-bottom:1px solid var(--hl);padding:28px} .col h2{font-size:30px;margin:8px 0 14px} .col ul{margin:0;padding:0;list-style:none} .col li{padding:10px 0;border-top:1px solid var(--hl);color:var(--fg)}
+.col.inner{background:var(--brass-soft)} .col.inner .lab{color:var(--brass)} .col.inner li{border-color:#3d3524}
+.price{display:flex;gap:28px;flex-wrap:wrap;align-items:baseline;margin-top:20px} .price b{font:400 44px/1 var(--display);color:var(--brass)} .price span{color:var(--mu)}
+.btn{display:inline-block;margin-top:24px;padding:14px 22px;min-height:44px;border:1px solid var(--brass);color:var(--brass);background:transparent;font:600 16px/1 var(--sans);text-decoration:none;border-radius:2px}
+.btn:focus-visible{outline:2px solid var(--fg);outline-offset:2px} .btn[aria-disabled=true]{opacity:.5;cursor:default}
+.terms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;padding-block:56px} .terms div{border-top:1px solid var(--fg);padding-top:16px} .terms h3{font-size:22px} .terms p{margin:6px 0 0;color:var(--mu)}
+footer{border-top:1px solid var(--hl);padding-block:28px;font:400 14px/1 var(--caps);letter-spacing:.12em;color:var(--mu);text-align:center}
+@media (max-width:760px){.cols,.terms{grid-template-columns:minmax(0,1fr)} .nav nav{margin-left:0;width:100%}}
+</style></head><body>
+<header class="pad"><div class="wrap nav"><img src="assets/seal.png" alt="The Mettle Method seal"><span class="nm">THE METTLE METHOD</span><nav aria-label="Main"><a href="about.html">About</a><a href="home.html">Home</a><a href="build.html">Build</a><a href="community.html">Community</a><a href="order.html">The Order</a><a href="reliquary.html">Reliquary</a></nav></div></header>
+<main>
+<section class="hero pad"><div class="wrap"><span class="lab">✠ The Inner Order</span><h1>Past the third rank.</h1><p>The Outer Court is free and stays free. The Inner Order is for those who have kept the practice and want the rest of the ladder, and four others to keep it with.</p></div></section>
+<section class="pad"><div class="wrap cols">
+<div class="col"><span class="lab">The Outer Court · Free</span><h2>What you have now</h2><ul><li>The daily lesson</li><li>The ledger of days</li><li>Ranks I to III</li><li>The hall, to read</li></ul></div>
+<div class="col inner"><span class="lab">✠ The Inner Order</span><h2>What opens</h2><ul><li>All nine ranks</li><li>A circle of five</li><li>The four councils</li><li>The Codex</li><li>Relics and houses</li><li>The Decision Journal and the Mental Models Deck</li></ul>
+<div class="price"><div><b data-price="month">[PRICE]</b> <span>a month</span></div><div><b data-price="year">[PRICE]</b> <span>a year</span></div></div>
+<a class="btn" id="join" href="#" aria-disabled="true">Join the Inner Order</a><p class="lab" id="join-note" style="margin:14px 0 0">The gates are not open yet.</p></div>
+</div></section>
+<section class="pad"><div class="wrap terms">
+<div><h3>Rank is never sold.</h3><p>Paying opens ranks IV to IX. It does not add a single day. Every rank is still earned by days kept.</p></div>
+<div><h3>Leave in one click.</h3><p>Cancel from your receipt at any time. You keep the Inner Order until the period you paid for ends, and you keep every day you earned.</p></div>
+<div><h3>The lesson stays free.</h3><p>The daily lesson, the ledger and the first three ranks are free for good, whether or not you ever pay.</p></div>
+</div></section>
+</main><footer class="pad">✠ Obey the process ✠</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script><script src="assets/js/mettle.js"></script></body></html>

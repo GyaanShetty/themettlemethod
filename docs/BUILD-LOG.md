@@ -56,3 +56,22 @@ Not done yet in this phase: reel re-skin, story and carousel series numbering, t
 - `daily.yml` now runs at 06:15 IST, covers every channel and opens a GitHub issue assigned to the owner when a publish fails.
 - Storage bucket `media` created (public read, service-role write).
 - None of the live paths has been exercised against the real APIs. No secrets exist yet, so only the dry-run path is proven.
+
+## Phase 5: payments and the order (13 Nov 2026)
+- Migrations `payments_and_order`, `claim_subscription_fix`, `member_pages`, `definer_out_of_api`, `claim_invite`, `nudges_once`, all applied and saved.
+- Edge Functions deployed: `payments-webhook`, `nightly`, `circle-assign`. `functions.yml` redeploys them from main; `nightly.yml` calls the nightly job.
+- Gumroad does not sign its pings. The webhook checks a secret token in the URL and the seller id in constant time. Stripe and Razorpay verifiers use their HMAC signatures and are ready behind the same interface.
+- Tested against the live database inside a transaction that was rolled back: a sale raises the member to Inner; a replayed event is ignored and makes no second payment; the member is placed in a circle; cancelling keeps Inner until the paid period ends; ending returns them to Outer and clears the circle; a sale made before sign-up is claimed at sign-up; a member's own attempt to set `tier` is refused.
+- Site wiring in `web/assets/js/order.js`: the ledger calendar, pillar bars and ticks, the ranks ladder, the reliquary, circles, the hall tally and roll. Relic rules are in `docs/RELICS.md`.
+- New page `web/inner.html`: price from config, brass marks, shows [PRICE] and "The gates are not open yet." until a price and checkout link are set.
+- art2 images placed: council on The Order, busts on About, half-built temple on Build, certificate on the Reliquary by the ceremony.
+- Event logging from the site through `MM.track`: visit, signup, oath, seal, vow, post, upgrade_view, invite_sent. upgrade_paid, cancel and invite_joined are written by the server.
+- Advisors: security clean.
+
+Decisions to confirm
+- Cancelling keeps the Inner Order until the paid period ends, then drops to Outer. The brief said "on cancel, set outer"; this is the fairer reading, and one line to change.
+- The flame note is sent on the second quiet day, one day before the flame rests.
+
+Not verified
+- The member pages were checked signed out only (layout, no script errors of their own). Google sign-in is not set up, so no page has been seen with a real member's data.
+- No real Gumroad ping has reached the webhook.
