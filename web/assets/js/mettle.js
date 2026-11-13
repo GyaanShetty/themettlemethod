@@ -12,8 +12,27 @@ MM.signIn=async()=>{
   let on=true;try{const r=await fetch(URL+'/auth/v1/settings',{headers:{apikey:KEY}});on=!!((await r.json()).external||{}).google}catch(e){}
   if(!on){document.querySelectorAll('#signup,#login').forEach(b=>{b.disabled=true;b.setAttribute('aria-disabled','true')});
     let n=document.getElementById('mm-gate');if(!n){n=document.createElement('p');n.id='mm-gate';n.setAttribute('role','status');n.style.cssText='margin:14px 0 0;font:400 14px/1.4 "Marcellus SC",Georgia,serif;letter-spacing:.14em;color:#A9A7A0';const at=document.getElementById('login')||document.getElementById('signup');if(at)at.after(n)}
-    if(n)n.textContent='The gates are not open yet. Sign-in opens soon.';return}
+    if(n)n.textContent='Google sign-in is not open yet. Enter by email below.';const m=document.querySelector('#mm-mail input');if(m)m.focus();return}
   return sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname.replace(/[^/]*$/,'')+'home.html'}})};
+// entry by email: a one-time link, no password
+MM.emailSignIn=email=>sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.origin+location.pathname.replace(/[^/]*$/,'')+'home.html'}});
+function mailForm(){
+  const at=document.getElementById('login')||document.getElementById('signup');if(!at||document.getElementById('mm-mail'))return;
+  const f=document.createElement('form');f.id='mm-mail';f.noValidate=true;f.style.cssText='margin:22px 0 0;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;max-width:420px';
+  const caps='font:400 13px/1.3 "Marcellus SC",Georgia,serif;letter-spacing:.14em;';
+  const l=document.createElement('label');l.htmlFor='mm-email';l.textContent='Or enter by email';l.style.cssText=caps+'flex:1 0 100%;opacity:.75';
+  const i=document.createElement('input');i.type='email';i.id='mm-email';i.name='email';i.required=true;i.autocomplete='email';i.placeholder='you@example.com';
+  i.style.cssText='flex:1 1 200px;min-width:0;min-height:44px;padding:10px 12px;background:transparent;color:inherit;border:1px solid currentColor;border-radius:2px;font:400 16px/1.2 "Hanken Grotesk",Arial,sans-serif';
+  const b=document.createElement('button');b.type='submit';b.textContent='Send me a link';
+  b.style.cssText='min-height:44px;padding:10px 16px;background:transparent;color:inherit;border:1px solid currentColor;border-radius:2px;cursor:pointer;font:600 15px/1 "Hanken Grotesk",Arial,sans-serif';
+  const st=document.createElement('p');st.setAttribute('role','status');st.style.cssText=caps+'flex:1 0 100%;margin:0;min-height:18px';
+  f.append(l,i,b,st);at.after(f);
+  f.addEventListener('submit',async e=>{e.preventDefault();
+    if(!i.value||!i.checkValidity()){st.textContent='Enter a full email address.';i.focus();return}
+    b.disabled=true;st.textContent='Sending.';
+    const {error}=await MM.emailSignIn(i.value.trim());b.disabled=false;
+    st.textContent=error?(error.status===429?'Too many links asked for. Try again in an hour.':'That did not go through. Try again in a minute.'):'A link is on its way. Open it on this device to enter.'});
+}
 MM.signOut=async()=>{await sb.auth.signOut();try{Object.keys(localStorage).filter(k=>k.startsWith('tmm.')).forEach(k=>localStorage.removeItem(k))}catch(e){};location.href='index.html'};
 function swapText(map){const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;const ns=[];while(n=w.nextNode())ns.push(n);
   ns.forEach(t=>{let s=t.nodeValue,o=s;for(const[a,b]of map)s=s.split(a).join(b);if(s!==o)t.nodeValue=s});
@@ -21,7 +40,7 @@ function swapText(map){const w=document.createTreeWalker(document.body,NodeFilte
   document.querySelectorAll('[aria-label*="Gyaan"]').forEach(e=>e.setAttribute('aria-label',e.getAttribute('aria-label').replace('Gyaan',map[0][1])))}
 async function load(){
   const {data:{session}}=await sb.auth.getSession();
-  if(!session){if(!PUBLIC.includes(page))location.replace('index.html');return}
+  if(!session){if(!PUBLIC.includes(page))location.replace('index.html');else if(page==='index'||page==='')mailForm();return}
   MM.user=session.user;
   const [p,s,d]=await Promise.all([
     sb.from('profiles').select('*').eq('id',MM.user.id).single(),
