@@ -105,3 +105,4 @@ What it does not do, against the brief
 - Before-and-after screenshots of all nine pages match, apart from the turning coin being caught at a different angle.
 - Added a page description, share image, favicon and touch icon to every page; a 404 page; `robots.txt`.
 - Sign-in: Google sign-in is not switched on in Supabase yet. The buttons now check first and say "The gates are not open yet. Sign-in opens soon." instead of landing on an error page.
+- Entry by email added to the gate page: a one-time link, no password, through Supabase's email sign-in, which is already on. The Google buttons stay and point to it until Google sign-in is switched on. The link only lands back on the site once the Site URL is set in Supabase > Authentication > URL Configuration.
