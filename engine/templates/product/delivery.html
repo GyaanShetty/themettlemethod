@@ -1,17 +1,19 @@
 <!doctype html><html><head><meta charset="utf-8"><style>
   @page { size: A4; margin: 0; }
-  @font-face { font-family: Fraunces; src: url('{{ fonts }}/Fraunces-SOFT-WONK-opsz-wght.ttf'); font-weight: 100 900; }
-  @font-face { font-family: Inter; src: url('{{ fonts }}/Inter-opsz-wght.ttf'); font-weight: 100 900; }
+  @font-face { font-family: Marcellus; src: url('{{ fonts }}/marcellus-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Marcellus SC'; src: url('{{ fonts }}/marcellus-sc-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Hanken Grotesk'; src: url('{{ fonts }}/hanken-grotesk-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Hanken Grotesk'; src: url('{{ fonts }}/hanken-grotesk-latin-600-normal.woff2') format('woff2'); font-weight: 600; font-display: swap; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: Inter, sans-serif; color: #1d1a16; }
+  body { font-family: 'Hanken Grotesk', sans-serif; color: #1d1a16; }
   .sheet { width: 210mm; height: 297mm; padding: 26mm 22mm; background: #FBF7F0; }
   .i { font-size: 52px; }
-  h1 { font: 600 38px/1.1 Fraunces, Georgia, serif; margin-top: 14px; }
+  h1 { font: 400 38px/1.1 Marcellus, Georgia, serif; margin-top: 14px; }
   .t { font-size: 15px; color: #5c554b; margin-top: 10px; line-height: 1.5; }
-  .cta { display: block; margin: 34px 0 10px; padding: 20px; background: {{ c.accent }}; color: #1d1a16; border-radius: 14px;
+  .cta { display: block; margin: 34px 0 10px; padding: 20px; background: {{ c.accent }}; color: #1d1a16; border-radius: 0;
          text-decoration: none; font-size: 20px; font-weight: 700; text-align: center; }
   .u { font-size: 12px; word-break: break-all; color: #5c554b; text-align: center; }
-  h2 { font: 600 20px Fraunces, serif; margin: 32px 0 12px; }
+  h2 { font: 400 20px Marcellus, serif; margin: 32px 0 12px; }
   ol { padding-left: 20px; } li { font-size: 14px; line-height: 1.6; margin-bottom: 8px; }
   .f { margin-top: 30px; font-size: 12px; color: #5c554b; }
 </style></head><body><div class="sheet">

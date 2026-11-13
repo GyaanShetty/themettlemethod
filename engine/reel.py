@@ -57,7 +57,7 @@ def _scene_audio(scene: dict, i: int, n: int, out: Path, cfg: dict, fps: int):
             pcm += _silence(GAP)
         t0 = len(pcm) / RATE
         wav = out / f"s{i:02d}_{k}.wav"
-        ws = tts.speak(line, wav, cfg["reels"]["voice"], cfg["reels"].get("rate", "+0%"))
+        ws = tts.speak(line, wav, cfg["reels"]["voice"], cfg["reels"].get("rate", "+0%"), cfg["reels"].get("pitch", "+0Hz"))
         starts.append(round(t0, 3))
         words += [{"text": w.text, "s": round(t0 + w.start, 3), "e": round(t0 + w.end, 3)} for w in ws]
         pcm += _read(wav)
@@ -80,7 +80,13 @@ def _page_html(m: dict, scene: dict, words, starts, voice_end, cfg) -> str:
         "brand": {"name": b["name"], "tagline": b["tagline"], "handle": b["handle"],
                   "site": "" if "YOUR-" in site else site.replace("https://", "")},
     }
-    return TPL.get_template("reel.html").render(data=data, c=b["colors"], fonts=(ROOT / "assets" / "fonts").as_uri())
+    from . import brand
+    from .atoms import image_path
+    data["image"] = image_path(m["image"]).as_uri() if m.get("image") else ""
+    data["seal"] = (ROOT / "web" / "assets" / "seal.png").as_uri()
+    data["pillar"] = f"PILLAR {brand.PILLARS[m['pillar']]} · {m['pillar'].upper()}" if m.get("pillar") else m["category"].upper()
+    data["numeral"] = brand.roman(m["number"])
+    return TPL.get_template("reel.html").render(data=data, brand_css=brand.css("ink"))
 
 
 def _hash(*parts) -> str:
@@ -88,6 +94,7 @@ def _hash(*parts) -> str:
     for p in parts:
         h.update(json.dumps(p, sort_keys=True, default=str).encode())
     h.update((Path(__file__).parent / "templates" / "reel.html").read_bytes())
+    h.update((ROOT / "brand" / "tokens.json").read_bytes())
     h.update(os.environ.get("TTS_ENGINE", "edge").encode())
     return h.hexdigest()[:16]
 
@@ -107,7 +114,7 @@ def render(slug: str, preview: bool = False) -> Path:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 1080, "height": 1920})
         for i, scene in enumerate(m["scenes"]):
-            key = _hash(scene, m["title"], m["number"], m["category"], cfg["brand"], cfg["reels"], i == n - 1)
+            key = _hash(scene, m["title"], m["number"], m["category"], m.get("image"), m.get("pillar"), cfg["brand"], cfg["reels"], i == n - 1)
             mp4, meta = out / f"s{i:02d}.mp4", out / f"s{i:02d}.json"
             cached = meta.exists() and json.loads(meta.read_text()).get("key") == key and (out / f"s{i:02d}.wav").exists()
 

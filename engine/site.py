@@ -60,7 +60,7 @@ def build(today: dt.date | None = None) -> Path:
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "fonts").mkdir(parents=True)
-    for f in (ROOT / "assets" / "fonts").glob("*.ttf"):
+    for f in (ROOT / "brand" / "fonts").glob("*.woff2"):
         shutil.copy(f, OUT / "fonts" / f.name)
 
     nav = [(m["label"], f"{root}/{t}/") for t, m in trs.items()] + [("Products", f"{root}/products/")]
